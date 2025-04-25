@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundBlush"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/budget_buddy_logo"
+            android:contentDescription="App Logo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to Budget Buddy!"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/primaryPink"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/btnAddExpense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Expense"
+            android:backgroundTint="@color/primaryPink"
+            android:textColor="@color/white"
+            android:layout_marginTop="24dp"/>
+
+        <Button
+            android:id="@+id/btnAddCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Category"
+            android:backgroundTint="@color/secondaryGreen"
+            android:textColor="@color/white"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/btnSetGoals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Spending Goals"
+            android:backgroundTint="@color/primaryPink"
+            android:textColor="@color/white"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/btnViewExpenses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Expenses"
+            android:backgroundTint="@color/secondaryGreen"
+            android:textColor="@color/white"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/btnViewGraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Graph"
+            android:backgroundTint="@color/primaryPink"
+            android:textColor="@color/white"
+            android:layout_marginTop="12dp"/>
+
+    </LinearLayout>
+</ScrollView>

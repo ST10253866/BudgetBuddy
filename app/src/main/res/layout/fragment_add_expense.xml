@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundBlush"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edtExpenseAmount"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="Amount"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/edtExpenseDescription"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_marginTop="8dp"
+            android:hint="Description" />
+
+        <Button
+            android:id="@+id/btnSelectDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Date"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/btnSelectCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Category"
+            android:layout_marginTop="8dp"/>
+
+        <ImageView
+            android:id="@+id/ivExpensePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="Expense Photo"
+            android:scaleType="centerCrop"/>
+
+        <Button
+            android:id="@+id/btnUploadPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Photo"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/btnSaveExpense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Expense"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/secondaryGreen"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+</ScrollView>
