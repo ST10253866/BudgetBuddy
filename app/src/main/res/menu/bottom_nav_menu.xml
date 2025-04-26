@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/categorySummary"
+        android:title="Summary"
+        android:icon="@drawable/summary" />
 
     <item
-        android:id="@+id/fragmentHome"
-        android:icon="@drawable/home"
-        android:title="Home" />
-
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/home" />
     <item
-        android:id="@+id/fragmentCategorySummary"
-        android:icon="@drawable/summary"
-        android:title="Summary" />
-
-    <item
-        android:id="@+id/fragmentGraphs"
-        android:icon="@drawable/graph"
-        android:title="Graphs" />
-
+        android:id="@+id/graph"
+        android:title="Graph"
+        android:icon="@drawable/graph" />
 </menu>

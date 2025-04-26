@@ -89,12 +89,12 @@
         <ListView
             android:id="@+id/listViewSummary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="148dp"
+            android:background="@android:color/white"
             android:divider="@color/primaryPink"
             android:dividerHeight="1dp"
-            android:background="@android:color/white"
-            android:padding="8dp"
-            android:elevation="2dp" />
+            android:elevation="2dp"
+            android:padding="8dp" />
 
     </LinearLayout>
 
