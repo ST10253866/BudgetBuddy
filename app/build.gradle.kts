@@ -7,6 +7,10 @@ android {
     namespace = "vcmsa.projects.budgetbuddy"
     compileSdk = 35
 
+    buildFeatures{
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "vcmsa.projects.budgetbuddy"
         minSdk = 30

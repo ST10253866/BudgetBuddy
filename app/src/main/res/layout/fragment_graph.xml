@@ -23,8 +23,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:src="@drawable/graph_placeholder"
+            android:contentDescription="Graph"
             android:scaleType="fitCenter"
-            android:contentDescription="Graph"/>
+            android:src="@drawable/graph" />
     </LinearLayout>
 </ScrollView>
