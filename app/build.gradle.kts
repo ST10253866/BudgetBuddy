@@ -8,10 +8,6 @@ android {
     namespace = "vcmsa.projects.bbuddy"
     compileSdk = 35
 
-    buildFeatures{
-        viewBinding = true
-    }
-
     defaultConfig {
         applicationId = "vcmsa.projects.bbuddy"
         minSdk = 24
