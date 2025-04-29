@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "829763818157",
+    "project_id": "androidauth-abfd9",
+    "storage_bucket": "androidauth-abfd9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829763818157:android:29a38602287c15c17d2c24",
+        "android_client_info": {
+          "package_name": "vcmsa.projects.bbuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5ciU9BzcRom2kAeXqOA9Ntj3kS3dl0us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829763818157:android:e66bb294f81fa6dd7d2c24",
+        "android_client_info": {
+          "package_name": "vcmsa.projects.icetask_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5ciU9BzcRom2kAeXqOA9Ntj3kS3dl0us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

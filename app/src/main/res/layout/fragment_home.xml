@@ -45,14 +45,6 @@
             android:textColor="@color/white"
             android:layout_marginTop="12dp"/>
 
-        <Button
-            android:id="@+id/btnSetGoals"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Set Spending Goals"
-            android:backgroundTint="@color/primaryPink"
-            android:textColor="@color/white"
-            android:layout_marginTop="12dp"/>
 
         <Button
             android:id="@+id/btnViewExpenses"

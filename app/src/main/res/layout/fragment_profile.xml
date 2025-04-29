@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create Account"
+            android:text="Profile"
             android:textColor="@color/primaryPink"
             android:textSize="28sp"
             android:textStyle="bold"
@@ -44,49 +44,16 @@
             android:layout_height="56dp"
             android:hint="Income"
             android:backgroundTint="@color/primaryPink"
-            android:padding="12dp"
-            android:drawableLeft="@android:drawable/ic_menu_myplaces" />
-
-        <EditText
-            android:id="@+id/etRegisterEmail"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:backgroundTint="@color/primaryPink"
-            android:padding="12dp"
-            android:drawableLeft="@android:drawable/ic_dialog_email"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/etRegisterPassword"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:backgroundTint="@color/primaryPink"
-            android:padding="12dp"
-            android:drawableLeft="@android:drawable/ic_lock_lock"
-            android:layout_marginTop="16dp" />
+            android:padding="12dp" />
 
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register"
+            android:text="Save Changes"
             android:textColor="@color/white"
             android:backgroundTint="@color/primaryPink"
             android:layout_marginTop="24dp" />
 
-        <TextView
-            android:id="@+id/tvGoToLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="Already have an account? Log in"
-            android:textAlignment="center"
-            android:textColor="@color/secondaryGreen" />
     </LinearLayout>
 </ScrollView>

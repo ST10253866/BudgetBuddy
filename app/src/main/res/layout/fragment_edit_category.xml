@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create New Category"
+            android:text="Edit Category"
             android:textSize="24sp"
             android:textColor="@color/primaryPink"
             android:textStyle="bold"
@@ -79,7 +79,7 @@
             android:id="@+id/buttonSaveCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Category"
+            android:text="Edit Category"
             android:backgroundTint="@color/secondaryGreen"
             android:textColor="@color/white"
             android:textStyle="bold"

@@ -13,6 +13,18 @@
         <action
             android:id="@+id/action_home_to_categorySummary"
             app:destination="@id/categorySummary" />
+        <action
+            android:id="@+id/action_home_to_profile"
+            app:destination="@id/profile" />
+        <action
+            android:id="@+id/action_home_to_addExpense"
+            app:destination="@id/addExpense" />
+        <action
+            android:id="@+id/action_home_to_createCategory"
+            app:destination="@id/createCategory" />
+        <action
+            android:id="@+id/action_home_to_expensesList"
+            app:destination="@id/expensesList" />
     </fragment>
     <fragment
         android:id="@+id/login"
@@ -23,6 +35,12 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/login"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/register" />
+        <action
+            android:id="@+id/action_login_to_home"
+            app:destination="@id/home" />
     </fragment>
     <fragment
         android:id="@+id/graph"
@@ -34,6 +52,9 @@
         <action
             android:id="@+id/action_graph_to_categorySummary"
             app:destination="@id/categorySummary" />
+        <action
+            android:id="@+id/action_graph_to_profile"
+            app:destination="@id/profile" />
     </fragment>
     <fragment
         android:id="@+id/categorySummary"
@@ -45,5 +66,42 @@
         <action
             android:id="@+id/action_categorySummary_to_graph"
             app:destination="@id/graph" />
+        <action
+            android:id="@+id/action_categorySummary_to_profile"
+            app:destination="@id/profile" />
     </fragment>
+    <fragment
+        android:id="@+id/register"
+        android:name="vcmsa.projects.bbuddy.register"
+        android:label="register" >
+        <action
+            android:id="@+id/action_register_to_login"
+            app:destination="@id/login" />
+    </fragment>
+    <fragment
+        android:id="@+id/profile"
+        android:name="vcmsa.projects.bbuddy.profile"
+        android:label="profile" >
+        <action
+            android:id="@+id/action_profile_to_home"
+            app:destination="@id/home" />
+        <action
+            android:id="@+id/action_profile_to_graph"
+            app:destination="@id/graph" />
+        <action
+            android:id="@+id/action_profile_to_categorySummary"
+            app:destination="@id/categorySummary" />
+    </fragment>
+    <fragment
+        android:id="@+id/addExpense"
+        android:name="vcmsa.projects.bbuddy.addExpense"
+        android:label="addExpense" />
+    <fragment
+        android:id="@+id/createCategory"
+        android:name="vcmsa.projects.bbuddy.createCategory"
+        android:label="createCategory" />
+    <fragment
+        android:id="@+id/expensesList"
+        android:name="vcmsa.projects.bbuddy.expensesList"
+        android:label="expensesList" />
 </navigation>

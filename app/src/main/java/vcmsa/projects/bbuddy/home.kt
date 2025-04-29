@@ -1,12 +1,11 @@
 package vcmsa.projects.bbuddy
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import vcmsa.projects.bbuddy.databinding.FragmentHomeBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -20,38 +19,45 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class home : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
-
+    private val binding: FragmentHomeBinding by lazy {
+        FragmentHomeBinding.inflate(layoutInflater)
+    }
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-
-            binding.btnSetGoals.setOnClickListener {
-                val i = Intent(requireContext(), Goals::class.java).apply {  }
-                startActivity(i)
-                //no work
-            }
         }
+
+        //nav stuff below
+        binding.btnAddExpense.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_addExpense)
+        }
+
+        binding.btnAddCategory.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_createCategory)
+        }
+
+        binding.btnViewExpenses.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_expensesList)
+        }
+
+        binding.btnViewGraph.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_graph)
+        }
+        //end of nav stuff
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
-        /*_binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root*/
+        return binding.root
     }
-
 
     companion object {
         /**
