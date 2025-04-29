@@ -19,9 +19,31 @@ Usage
 -To get access and run this program you will need to do get the source code from my GitHub repository and run the program using Android studio that you have on your computer.
 From here you can run the program on Android studio and follow the prompts or steps that the program will show you. 
 
-
 How to use  
-============
+=============
+-The user will need to open the app when once downloaded, they will need to create an account to use the app. The user will have to enter their first name, last name, the income they make in rands, 
+their email and set a password then click the register button to register, however if they already have an account, they can click the link below the button. 
+
+-If users click the link to take them to the log in page, they can enter their username and password and then click the log in button to use the button. 
+
+-The user will see a navigation bar at the bottom of the screen with a profile icon they can click on this profile icon and a page will appear. 
+This page will allow the user to edit their profile like their first name, last name and income they earn. They can then click the button save changes to save what they edited on their profile.  	    	 
+
+-The users will also see on the navigation bar a home icon and if they click it a page will load showing four buttons, “Add Expense ” , “Create category", "View expenses", "View Graph”. 
+
+-From the home page if the user clicks on the button add expense a page will appear and allow the user to enter and amount of the expense, description of the expense , click the select date button to choose a date of when the expense happened ,
+click on the select category button to choose what category the expense belongs to and finally they will also have the option to upload a photo my clicking the upload button then then they will click the save expense button to save the their expense. 
+
+-From the home page if the user clicks on the button “Create category” a new page will appear and the user will need to enter the name of the category” ,
+amount of the category , description of the category , a minimum monthly spending goal , a maximum monthly spending goal and the user will then have to click the save button category button to save their category. 
+
+ 
+-From the home page if the user clicks on the button “View expenses”
+they will be taken to a page where they  can view all of their expenses buy entering a start date and end date.
+Between these dates ethe expanses they made during that time till be shown to the user in list form. 
+
+ 
+-From the home page if the user clicks on the button “View Graph” a page will appear loading a graph that allows the user to see their expense during certain times in each month.  
  
 
 Login details for a user in system below: 
