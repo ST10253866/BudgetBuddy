@@ -4,7 +4,10 @@ This application Budget buddy is a budget tracker app that makes use of data per
 
 This application is an android studio APPLICATION –It will allow the user to create expense entries and categories that the budget and expense entries will belong to. 
 
- 
+
+Change log 
+===========
+The design from our part one changed to meet user satisfactory requiremmnts and the new desgin of user interfaces will allow users to easily use the app.
 
 Installation steps 
 ===================
