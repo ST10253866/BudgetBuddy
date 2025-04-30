@@ -1,31 +1,69 @@
 package vcmsa.projects.bbuddy
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import vcmsa.projects.bbuddy.databinding.FragmentCreateCategoryBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [createCategory.newInstance] factory method to
- * create an instance of this fragment.
- */
 class createCategory : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private val binding: FragmentCreateCategoryBinding by lazy {
+        FragmentCreateCategoryBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
+
+        val db = BBuddyDatabase.getDatabase(requireContext())
+        val dao = db.bbuddyDAO()
+
+        binding.btnSaveCategory.setOnClickListener {
+            // Check if all fields are filled
+            if (binding.etCategoryName.text.isNotEmpty() &&
+                binding.etMaxGoal.text.isNotEmpty() &&
+                binding.etMinGoal.text.isNotEmpty()
+            ) {
+                try {
+                    // Create a new category entity
+                    val category = categoryEntity(
+                        userId = UserSession.userId ?: 0,  // setting the fk defaults to 0 if null
+                        name = binding.etCategoryName.text.toString(),
+                        description = binding.etCategoryDescription.text.toString(),
+                        maxAmount = binding.etMaxGoal.text.toString().toDouble(),
+                        minAmount = binding.etMinGoal.text.toString().toDouble()
+                    )
+
+                    // Insert into the database in a background thread
+                    Thread {
+                        dao.insertCategory(category)
+
+                        // Show success message on the main thread after insertion
+                        activity?.runOnUiThread {
+                            Toast.makeText(
+                                requireActivity(),
+                                "Category Created Successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }.start()
+                } catch (e: Exception) {
+                    // Handle any errors
+                    activity?.runOnUiThread {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Error creating category: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else {
+                // If fields are empty, show a toast
+                Toast.makeText(requireActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -33,27 +71,8 @@ class createCategory : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_category, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment createCategory.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            createCategory().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        return binding.root
     }
 }
+
+

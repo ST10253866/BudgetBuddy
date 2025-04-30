@@ -23,7 +23,7 @@
 
         <!-- Category Name -->
         <EditText
-            android:id="@+id/editTextCategoryName"
+            android:id="@+id/etCategoryName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Category Name"
@@ -33,31 +33,23 @@
             android:inputType="text" />
 
         <!-- Category Name -->
-        <EditText
-            android:id="@+id/editTextCategoryAmount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Amount For Category"
-            android:backgroundTint="@color/primaryPink"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp"
-            android:inputType="text" />
 
         <!-- Category Description -->
-        <EditText
-            android:id="@+id/editTextCategoryDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Category Description (Optional)"
-            android:backgroundTint="@color/primaryPink"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp"
-            android:minLines="3"
-            android:gravity="top"
-            android:inputType="textMultiLine" />
 
         <EditText
-            android:id="@+id/edtMinGoal"
+            android:id="@+id/etCategoryDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/primaryPink"
+            android:gravity="top"
+            android:hint="Category Description (Optional)"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/etMinGoal"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginBottom="8dp"
@@ -66,7 +58,7 @@
             android:inputType="numberDecimal" />
 
         <EditText
-            android:id="@+id/edtMaxGoal"
+            android:id="@+id/etMaxGoal"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:hint="Maximum Monthly Spending Goal"
@@ -76,7 +68,7 @@
 
         <!-- Save Button -->
         <Button
-            android:id="@+id/buttonSaveCategory"
+            android:id="@+id/btnSaveCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Save Category"

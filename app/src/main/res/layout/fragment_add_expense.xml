@@ -12,35 +12,41 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/edtExpenseAmount"
+            android:id="@+id/etExpenseName"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="Name"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/etExpenseAmount"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:hint="Amount"
             android:inputType="numberDecimal" />
 
         <EditText
-            android:id="@+id/edtExpenseDescription"
+            android:id="@+id/etExpenseDescription"
             android:layout_width="match_parent"
             android:layout_height="57dp"
             android:layout_marginTop="8dp"
             android:hint="Description" />
 
-        <Button
-            android:id="@+id/btnSelectDate"
+        <EditText
+            android:id="@+id/etMonthYear"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select Date"
-            android:layout_marginTop="8dp"/>
+            android:layout_height="57dp"
+            android:layout_marginTop="8dp"
+            android:hint="Month and Year of expense" />
 
-        <Button
-            android:id="@+id/btnSelectCategory"
+        <Spinner
+            android:id="@+id/spnCategories"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select Category"
-            android:layout_marginTop="8dp"/>
+            android:layout_height="63dp"
+            android:spinnerMode="dropdown"/>
 
         <ImageView
-            android:id="@+id/ivExpensePhoto"
+            android:id="@+id/imgExpensePhoto"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="16dp"

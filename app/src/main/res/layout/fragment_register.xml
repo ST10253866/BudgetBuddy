@@ -45,6 +45,7 @@
             android:hint="Income"
             android:backgroundTint="@color/primaryPink"
             android:padding="12dp"
+            android:inputType="numberDecimal"
             android:drawableLeft="@android:drawable/ic_menu_myplaces" />
 
         <EditText
@@ -81,12 +82,13 @@
         <TextView
             android:id="@+id/tvGoToLogin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="67dp"
             android:layout_marginTop="16dp"
             android:clickable="true"
             android:focusable="true"
             android:text="Already have an account? Log in"
             android:textAlignment="center"
-            android:textColor="@color/secondaryGreen" />
+            android:textColor="@color/secondaryGreen"
+            android:textSize="20sp" />
     </LinearLayout>
 </ScrollView>

@@ -23,7 +23,7 @@
 
         <!-- Category Name -->
         <EditText
-            android:id="@+id/editTextCategoryName"
+            android:id="@+id/etCategoryName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Category Name"
@@ -45,7 +45,7 @@
 
         <!-- Category Description -->
         <EditText
-            android:id="@+id/editTextCategoryDescription"
+            android:id="@+id/etCategoryDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Category Description (Optional)"
@@ -57,7 +57,7 @@
             android:inputType="textMultiLine" />
 
         <EditText
-            android:id="@+id/edtMinGoal"
+            android:id="@+id/etMinGoal"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginBottom="8dp"
@@ -66,7 +66,7 @@
             android:inputType="numberDecimal" />
 
         <EditText
-            android:id="@+id/edtMaxGoal"
+            android:id="@+id/etMaxGoal"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:hint="Maximum Monthly Spending Goal"
@@ -76,7 +76,7 @@
 
         <!-- Save Button -->
         <Button
-            android:id="@+id/buttonSaveCategory"
+            android:id="@+id/btnSaveCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Edit Category"
