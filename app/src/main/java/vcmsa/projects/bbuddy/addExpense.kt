@@ -107,7 +107,7 @@ class addExpense : androidx.fragment.app.Fragment() {
 
             val db = BBuddyDatabase.getDatabase(requireContext())
             val dao = db.bbuddyDAO()
-            val userId = UserSession.userId ?: 0
+
 
             if (binding.etExpenseAmount.text.isNotEmpty() &&
                 binding.etMonthYear.text.isNotEmpty() &&

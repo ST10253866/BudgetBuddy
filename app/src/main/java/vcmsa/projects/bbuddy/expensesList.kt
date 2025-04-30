@@ -1,13 +1,18 @@
 package vcmsa.projects.bbuddy
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import vcmsa.projects.bbuddy.databinding.FragmentExpensesListBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -20,6 +25,18 @@ class expensesList : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var selectedCategoryId: Int? = null //need be declared for both listeners
+    private var selectedImageUri: Uri? = null
+
+    private var _binding: FragmentExpensesListBinding? = null
+    private val binding get() = _binding!!
+
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            selectedImageUri = it
+            // binding.imgExpensePhoto.setImageURI(it)
+        }
+    } //for the image thing
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +49,62 @@ class expensesList : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_expenses_list, container, false)
+    ): View {
+        _binding = FragmentExpensesListBinding.inflate(inflater, container, false)
+
+        val db = BBuddyDatabase.getDatabase(requireContext())
+        val dao = db.bbuddyDAO()
+        val userId = UserSession.userId ?: 0
+
+        // Observing categories and populating spinner
+        dao.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->
+            categories?.let {
+                Log.d("AddExpenseFragment", "Fetched Categories: $it")  // Log categories for debugging
+
+                if (it.isEmpty()) {
+                    Toast.makeText(requireContext(), "No categories available.", Toast.LENGTH_SHORT).show()
+                } else {
+                    val categoryNames = it.map { category -> category.name }
+
+                    val adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item,
+                        categoryNames
+                    )
+
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    binding.spnExpensesCategories.adapter = adapter
+
+                    // Spinner item selection listener
+                    binding.spnExpensesCategories.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            val selectedCategory = it[position]
+                            selectedCategoryId = selectedCategory.id
+
+                            Toast.makeText(
+                                requireActivity(),
+                                "Selected Category ID: $selectedCategoryId",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {}
+                    }
+                }
+            }
+        }
+
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

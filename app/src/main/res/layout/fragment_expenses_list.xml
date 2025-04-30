@@ -25,41 +25,40 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start Date"
-            android:textSize="16sp"
+            android:layout_marginBottom="8dp"
+            android:text="Fiter by Date"
             android:textColor="@color/primaryPink"
-            android:layout_marginBottom="8dp" />
+            android:textSize="16sp" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/startDateEditText"
             android:layout_width="match_parent"
             android:layout_height="59dp"
-            android:hint="Select Start Date"
+            android:hint="Select  Date"
             android:inputType="date" />
 
         <!-- End Date Input -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="End Date"
-            android:textSize="16sp"
-            android:textColor="@color/primaryPink"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/endDateEditText"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:hint="Select End Date"
-            android:inputType="date" />
+            android:layout_marginBottom="8dp"
+            android:text="Filter by Category"
+            android:textColor="@color/primaryPink"
+            android:textSize="16sp" />
 
         <!-- RecyclerView for Expenses -->
+        <Spinner
+            android:id="@+id/spnExpensesCategories"
+            android:layout_width="match_parent"
+            android:layout_height="52dp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/expenseRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp" />
+
     </LinearLayout>
 
 </ScrollView>

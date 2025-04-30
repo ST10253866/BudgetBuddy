@@ -10,92 +10,76 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
+        <!-- Title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Category Summary"
-            android:textSize="28sp"
+            android:text="Edit Category"
+            android:textSize="24sp"
             android:textColor="@color/primaryPink"
             android:textStyle="bold"
             android:gravity="center"
             android:layout_marginBottom="24dp" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Category:"
-            android:textColor="@color/primaryPink"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
-
+        <!-- Category Name -->
         <Spinner
-            android:id="@+id/spinnerCategory"
+            android:id="@+id/spnCategory"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/primaryPink" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Start Date:"
-            android:textColor="@color/primaryPink"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:layout_height="55dp" />
 
         <EditText
-            android:id="@+id/edtStartDate"
+            android:id="@+id/etCategoryName"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/primaryPink"
-            android:clickable="true"
-            android:focusable="false"
-            android:hint="MM/DD/YYYY"
-            android:textColor="@android:color/black" />
-
-        <!-- End Date Input -->
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select End Date:"
-            android:textColor="@color/primaryPink"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:hint="Category Name"
+            android:backgroundTint="@color/primaryPink"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            android:inputType="text" />
+
+        <!-- Category Name -->
+
+        <!-- Category Description -->
+        <EditText
+            android:id="@+id/etCategoryDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Category Description (Optional)"
+            android:backgroundTint="@color/primaryPink"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            android:minLines="3"
+            android:gravity="top"
+            android:inputType="textMultiLine" />
 
         <EditText
-            android:id="@+id/edtEndDate"
+            android:id="@+id/etMinGoal"
             android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:layout_marginBottom="24dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="8dp"
             android:backgroundTint="@color/primaryPink"
-            android:clickable="true"
-            android:focusable="false"
-            android:hint="MM/DD/YYYY"
-            android:textColor="@android:color/black" />
+            android:hint="Minimum Monthly Spending Goal"
+            android:inputType="numberDecimal" />
 
-        <!-- Summary ListView -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Summary Details:"
-            android:textColor="@color/primaryPink"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
-
-        <ListView
-            android:id="@+id/listViewSummary"
+        <EditText
+            android:id="@+id/etMaxGoal"
             android:layout_width="match_parent"
-            android:layout_height="148dp"
-            android:background="@android:color/white"
-            android:divider="@color/primaryPink"
-            android:dividerHeight="1dp"
-            android:elevation="2dp"
-            android:padding="8dp" />
+            android:layout_height="64dp"
+            android:hint="Maximum Monthly Spending Goal"
+            android:backgroundTint="@color/primaryPink"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/btnSaveCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Category"
+            android:backgroundTint="@color/secondaryGreen"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
 
     </LinearLayout>
-
 </ScrollView>
