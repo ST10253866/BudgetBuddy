@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNav.setupWithNavController(navController)
 
-        //checks changed frags for login/register. if its those then we hiding the navbar
+        //checks for fragments changed and for login/register. If  it is the login or regisetr then we chnage those two
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.login, R.id.register -> bottomNav.visibility = View.GONE
