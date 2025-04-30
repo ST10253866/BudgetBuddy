@@ -151,8 +151,10 @@ class addExpense : androidx.fragment.app.Fragment() {
         }//end of btnSave
 
         binding.btnUploadPhoto.setOnClickListener {
+            Log.d("AddExpenseFragment", "Upload photo button clicked")
+            Toast.makeText(requireContext(), "Opening image picker", Toast.LENGTH_SHORT).show()
             getContent.launch("image/*")
-        }//btn image upload
+        }
 
         // Inflate the layout for this fragment
         return binding.root

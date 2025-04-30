@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:hint="Income"
+            android:inputType="numberDecimal"
             android:backgroundTint="@color/primaryPink"
             android:padding="12dp" />
 
