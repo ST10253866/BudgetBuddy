@@ -26,5 +26,13 @@
             android:contentDescription="Graph"
             android:scaleType="fitCenter"
             android:src="@drawable/graph" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Coming soon Watch this space!"
+            android:textAlignment="center"
+            android:textSize="48sp" />
     </LinearLayout>
 </ScrollView>
