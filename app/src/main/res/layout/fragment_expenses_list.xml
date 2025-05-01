@@ -22,6 +22,12 @@
             android:layout_marginBottom="16dp" />
 
         <!-- Start Date Input -->
+        <Button
+            android:id="@+id/btnListBack"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

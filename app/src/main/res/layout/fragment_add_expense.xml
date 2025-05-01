@@ -11,6 +11,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/btnAddBack"
+            android:layout_width="83dp"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
         <EditText
             android:id="@+id/etExpenseName"
             android:layout_width="match_parent"
@@ -37,7 +43,9 @@
             android:layout_width="match_parent"
             android:layout_height="57dp"
             android:layout_marginTop="8dp"
-            android:hint="Month and Year of expense" />
+            android:hint="MM/YYYY"
+            android:maxLength="7"
+            android:digits="1234567890/" />
 
         <Spinner
             android:id="@+id/spnCategories"

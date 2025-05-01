@@ -20,6 +20,12 @@
             android:textColor="@color/primaryPink"
             android:layout_marginBottom="16dp"/>
 
+        <Button
+            android:id="@+id/btnGraphBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="300dp"

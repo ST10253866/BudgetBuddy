@@ -95,11 +95,19 @@
     <fragment
         android:id="@+id/addExpense"
         android:name="vcmsa.projects.bbuddy.addExpense"
-        android:label="addExpense" />
+        android:label="addExpense" >
+        <action
+            android:id="@+id/action_addExpense_to_home"
+            app:destination="@id/home" />
+    </fragment>
     <fragment
         android:id="@+id/createCategory"
         android:name="vcmsa.projects.bbuddy.createCategory"
-        android:label="createCategory" />
+        android:label="createCategory" >
+        <action
+            android:id="@+id/action_createCategory_to_home"
+            app:destination="@id/home" />
+    </fragment>
     <fragment
         android:id="@+id/expensesList"
         android:name="vcmsa.projects.bbuddy.expensesList"

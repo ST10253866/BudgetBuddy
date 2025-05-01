@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import vcmsa.projects.bbuddy.databinding.FragmentAddExpenseBinding
 import android.util.Log
+import androidx.navigation.fragment.findNavController
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -109,52 +110,60 @@ class addExpense : androidx.fragment.app.Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        binding.btnAddBack.setOnClickListener {
+            findNavController().navigate(R.id.action_addExpense_to_home)
+        }
+
         // Save expense on button click
         binding.btnSaveExpense.setOnClickListener {
 
-            val db = BBuddyDatabase.getDatabase(requireContext())
-            val dao = db.bbuddyDAO()
+           /* if ((!binding.etMonthYear.text[2].equals("/")) && binding.etMonthYear.text.count{it.isDigit()} != 6){
+                Toast.makeText(requireActivity(), "Please format date correctly", Toast.LENGTH_SHORT).show()
+            } else {*/
+                val db = BBuddyDatabase.getDatabase(requireContext())
+                val dao = db.bbuddyDAO()
 
 
-            if (binding.etExpenseAmount.text.isNotEmpty() &&
-                binding.etMonthYear.text.isNotEmpty() &&
-                selectedCategoryId != null
-            ) {
+                if (binding.etExpenseAmount.text.isNotEmpty() &&
+                    binding.etMonthYear.text.isNotEmpty() &&
+                    selectedCategoryId != null
+                ) {
 
-                val expense = expenseEntity(
-                    userId = UserSession.userId ?: 0,  // setting the fk defaults to 0 if null, though unlikely to happen
-                    name = binding.etExpenseName.text.toString(),
-                    description = binding.etExpenseDescription.text.toString(),
-                    monthYear = binding.etMonthYear.text.toString(),
-                    Amount = binding.etExpenseAmount.text.toString().toDouble(),
-                    categoryId = selectedCategoryId!!,
-                    imageUri = selectedImageUri?.toString() ?: "" // my bad here supposed to make the uri field nullable so this'll have to do for the time being
-                )
+                    val expense = expenseEntity(
+                        userId = UserSession.userId ?: 0,  // setting the fk defaults to 0 if null, though unlikely to happen
+                        name = binding.etExpenseName.text.toString(),
+                        description = binding.etExpenseDescription.text.toString(),
+                        monthYear = binding.etMonthYear.text.toString(),
+                        Amount = binding.etExpenseAmount.text.toString().toDouble(),
+                        categoryId = selectedCategoryId!!,
+                        imageUri = selectedImageUri?.toString() ?: "" // my bad here supposed to make the uri field nullable so this'll have to do for the time being
+                    )
 
-                // Perform the database insert operation in a background thread
-                Thread {
-                    try {
-                        dao.insertExpense(expense)
-                        activity?.runOnUiThread {
-                            // Success message
-                            Toast.makeText(
-                                requireActivity(),
-                                "Expense Created Successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                    // Perform the database insert operation in a background thread
+                    Thread {
+                        try {
+                            dao.insertExpense(expense)
+                            activity?.runOnUiThread {
+                                // Success message
+                                Toast.makeText(
+                                    requireActivity(),
+                                    "Expense Created Successfully",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } catch (e: Exception) {
+                            // Handle any database errors here
+                            activity?.runOnUiThread {
+                                Toast.makeText(
+                                    requireActivity(),
+                                    "Error: ${e.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
-                    } catch (e: Exception) {
-                        // Handle any database errors here
-                        activity?.runOnUiThread {
-                            Toast.makeText(
-                                requireActivity(),
-                                "Error: ${e.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }.start()
-            }
+                    }.start()
+                }
+            //}
         }//end of btnSave
 
         binding.btnUploadPhoto.setOnClickListener {

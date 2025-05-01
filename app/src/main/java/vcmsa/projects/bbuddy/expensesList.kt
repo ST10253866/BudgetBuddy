@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import vcmsa.projects.bbuddy.databinding.FragmentExpensesListBinding
 
@@ -74,6 +75,10 @@ class expensesList : Fragment() {
                     }
                 }
             }
+        }
+
+        binding.btnListBack.setOnClickListener {
+            findNavController().navigate(R.id.action_addExpense_to_home)
         }
 
         // Filter button click listener

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import vcmsa.projects.bbuddy.databinding.FragmentCategorySummaryBinding
 
 private const val ARG_PARAM1 = "param1"
@@ -104,6 +105,10 @@ class categorySummary : Fragment() {
             }
         }
 
+        binding.btnSumBack.setOnClickListener {
+            findNavController().navigate(vcmsa.projects.bbuddy.R.id.action_categorySummary_to_home)
+        }
+
         //everything here should be called update not register... ffs
         binding.btnSaveCategory.setOnClickListener {
             if (binding.etCategoryName.text.isNotEmpty() &&
@@ -112,27 +117,31 @@ class categorySummary : Fragment() {
                 binding.etMinGoal.text.isNotEmpty() &&
                 selectedCategoryId != null
             ) {
-                val categoryToUpdate = userCategories.find { it.id == selectedCategoryId }
+                if (binding.etMinGoal.text.toString().toDouble() >= binding.etMaxGoal.text.toString().toDouble()){
+                    Toast.makeText(requireActivity(), "Minimum goal must be less than the maximum goal", Toast.LENGTH_SHORT).show()
+                } else {
+                    val categoryToUpdate = userCategories.find { it.id == selectedCategoryId }
 
-                categoryToUpdate?.let {
-                    val updatedCategory = it.copy(
-                        name = binding.etCategoryName.text.toString(),
-                        description = binding.etCategoryDescription.text.toString(),
-                        minAmount = binding.etMinGoal.text.toString().toDoubleOrNull() ?: 0.0,
-                        maxAmount = binding.etMaxGoal.text.toString().toDoubleOrNull() ?: 0.0
-                    )
+                    categoryToUpdate?.let {
+                        val updatedCategory = it.copy(
+                            name = binding.etCategoryName.text.toString(),
+                            minAmount = binding.etMinGoal.text.toString().toDoubleOrNull() ?: 0.0,
+                            maxAmount = binding.etMaxGoal.text.toString().toDoubleOrNull() ?: 0.0
+                        )
 
-                    Thread {
-                        dao.updateCategory(updatedCategory)
-                        requireActivity().runOnUiThread {
-                            Toast.makeText(
-                                requireContext(),
-                                "Category updated successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }.start()
-                } ?: Toast.makeText(requireContext(), "Category not found.", Toast.LENGTH_SHORT).show()
+                        Thread {
+                            dao.updateCategory(updatedCategory)
+                            requireActivity().runOnUiThread {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Category updated successfully",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }.start()
+                    } ?: Toast.makeText(requireContext(), "Category not found.", Toast.LENGTH_SHORT).show()
+                }
+
             } else {
                 Toast.makeText(requireContext(), "Please fill all fields.", Toast.LENGTH_SHORT).show()
             }
