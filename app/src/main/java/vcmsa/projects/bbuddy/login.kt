@@ -46,33 +46,39 @@ class login : Fragment() {
         val dao = db.bbuddyDAO()
 
         binding.btnLogin.setOnClickListener {
-            auth.signInWithEmailAndPassword(
-                binding.etLoginUsername.text.toString(),
-                binding.etLoginPassword.text.toString()
-            ).addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    // Login success
-                    // Observe the users only once login succeeds
-                    dao.getAllUsers().observe(viewLifecycleOwner, Observer { users ->
-                        val foundUser = users.find { it.fbUid == auth.currentUser?.uid }
-                        // Log the found user and the users list for debugging
-                        Log.d("Login", "Users found: $users")
-                        if (foundUser != null) {
-                            // Store the user ID in UserSession object
-                            UserSession.userId = foundUser.id
-                            Toast.makeText(requireContext(), "ID: ${foundUser.id}", Toast.LENGTH_SHORT).show()
-                            // Proceed to the next screen
-                            findNavController().navigate(R.id.action_login_to_home)
-                        } else {
-                            Toast.makeText(requireContext(), "User not found in DB.", Toast.LENGTH_SHORT).show()
-                        }
-                    })
-                    Toast.makeText(requireContext(), "Authentication passed.", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(requireContext(), "Authentication failed.", Toast.LENGTH_SHORT).show()
+            if (binding.etLoginUsername.text.isNullOrEmpty() || binding.etLoginPassword.text.isNullOrEmpty()){
+                Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show()
+            } else {
+                auth.signInWithEmailAndPassword(
+                    binding.etLoginUsername.text.toString(),
+                    binding.etLoginPassword.text.toString()
+                ).addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
+                        // Login success
+                        // Observe the users only once login succeeds
+                        dao.getAllUsers().observe(viewLifecycleOwner, Observer { users ->
+                            val foundUser = users.find { it.fbUid == auth.currentUser?.uid }
+                            // Log the found user and the users list for debugging
+                            Log.d("Login", "Users found: $users")
+                            if (foundUser != null) {
+                                // Store the user ID in UserSession object
+                                UserSession.userId = foundUser.id
+                                //Toast.makeText(requireContext(), "ID: ${foundUser.id}", Toast.LENGTH_SHORT).show()
+                                // Proceed to the next screen
+                                findNavController().navigate(R.id.action_login_to_home)
+                            } else {
+                                Toast.makeText(requireContext(), "Username or password is incorrect", Toast.LENGTH_SHORT).show()
+                                //Toast.makeText(requireContext(), "User not found in DB.", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                        //took this out because also fires when user not found, also too many messages
+                        //Toast.makeText(requireContext(), "Authentication passed.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Username or password is incorrect", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-        }
+        }//button end
     }
 
     override fun onCreateView(

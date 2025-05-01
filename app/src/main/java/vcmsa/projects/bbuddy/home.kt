@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import vcmsa.projects.bbuddy.databinding.FragmentHomeBinding
 
@@ -32,6 +33,7 @@ class home : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        Toast.makeText(requireContext(), "Welcome", Toast.LENGTH_SHORT).show()
 
         //nav stuff below
         binding.btnAddExpense.setOnClickListener {

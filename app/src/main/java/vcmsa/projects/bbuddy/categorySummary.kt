@@ -1,6 +1,7 @@
 package vcmsa.projects.bbuddy
 
 import android.R
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -57,8 +58,12 @@ class categorySummary : Fragment() {
                 Log.d("AddExpenseFragment", "Fetched Categories: $it")  // Log categories for debugging
 
                 if (it.isEmpty()) {
+                    var col = Color.rgb(136, 136, 136)
+                    binding.btnSaveCategory.setBackgroundColor(col)
                     Toast.makeText(requireContext(), "No categories available.", Toast.LENGTH_SHORT).show()
                 } else {
+                    var col = Color.rgb(137, 201, 163)
+                    binding.btnSaveCategory.setBackgroundColor(col)
                     val categoryNames = it.map { category -> category.name }
 
                     val adapter = ArrayAdapter(

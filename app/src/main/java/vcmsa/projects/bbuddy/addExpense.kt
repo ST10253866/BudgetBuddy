@@ -1,5 +1,6 @@
 package vcmsa.projects.bbuddy
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -57,7 +58,13 @@ class addExpense : androidx.fragment.app.Fragment() {
 
                 if (it.isEmpty()) {
                     Toast.makeText(requireContext(), "No categories available.", Toast.LENGTH_SHORT).show()
+                    binding.btnSaveExpense.isEnabled = false
+                    var col = Color.rgb(136, 136, 136)
+                    binding.btnSaveExpense.setBackgroundColor(col)
                 } else {
+                    binding.btnSaveExpense.isEnabled = true
+                    var col = Color.rgb(137, 201, 163)
+                    binding.btnSaveExpense.setBackgroundColor(col)
                     // Map the category names
                     val categoryNames = it.map { category -> category.name }
 
