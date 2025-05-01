@@ -11,39 +11,22 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.LinearLayoutManager
 import vcmsa.projects.bbuddy.databinding.FragmentExpensesListBinding
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [expensesList.newInstance] factory method to
- * create an instance of this fragment.
- */
 class expensesList : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    var selectedCategoryId: Int? = null //need be declared for both listeners
-    private var selectedImageUri: Uri? = null
 
+    private var selectedCategoryId: Int? = null
+    private var selectedImageUri: Uri? = null
     private var _binding: FragmentExpensesListBinding? = null
     private val binding get() = _binding!!
 
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            selectedImageUri = it
-            // binding.imgExpensePhoto.setImageURI(it)
-        }
-    } //for the image thing
+    private lateinit var adapter: ExpenseAdapter
+    private lateinit var dao: bbuddyDAO
+    private val userId: Int by lazy { UserSession.userId ?: 0 }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let { selectedImageUri = it }
     }
 
     override fun onCreateView(
@@ -53,48 +36,67 @@ class expensesList : Fragment() {
         _binding = FragmentExpensesListBinding.inflate(inflater, container, false)
 
         val db = BBuddyDatabase.getDatabase(requireContext())
-        val dao = db.bbuddyDAO()
-        val userId = UserSession.userId ?: 0
+        dao = db.bbuddyDAO()
 
-        // Observing categories and populating spinner
+        // Set up RecyclerView
+        adapter = ExpenseAdapter(emptyList())
+        binding.rvExpenses.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvExpenses.adapter = adapter
+
+        // Load all expenses initially
+        dao.getAllExpenses().observe(viewLifecycleOwner) { allExpenses ->
+            adapter.updateData(allExpenses)
+        }
+
+        // Populate category spinner
         dao.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->
-            categories?.let {
-                Log.d("AddExpenseFragment", "Fetched Categories: $it")  // Log categories for debugging
+            if (categories.isNotEmpty()) {
+                val categoryNames = categories.map { it.name }
+                val categoryMap = categories.associateBy { it.name }
 
-                if (it.isEmpty()) {
-                    Toast.makeText(requireContext(), "No categories available.", Toast.LENGTH_SHORT).show()
-                } else {
-                    val categoryNames = it.map { category -> category.name }
+                val spinnerAdapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_item,
+                    categoryNames
+                )
 
-                    val adapter = ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_spinner_item,
-                        categoryNames
-                    )
+                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.spnExpensesCategories.adapter = spinnerAdapter
 
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    binding.spnExpensesCategories.adapter = adapter
-
-                    // Spinner item selection listener
-                    binding.spnExpensesCategories.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            val selectedCategory = it[position]
-                            selectedCategoryId = selectedCategory.id
-
-                            Toast.makeText(
-                                requireActivity(),
-                                "Selected Category ID: $selectedCategoryId",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>) {}
+                binding.spnExpensesCategories.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                        val selectedName = categoryNames[position]
+                        selectedCategoryId = categoryMap[selectedName]?.id
                     }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+                        selectedCategoryId = null
+                    }
+                }
+            }
+        }
+
+        // Filter button click listener
+        binding.btnFilter.setOnClickListener {
+            val selectedMonthYear = binding.startDateEditText.text.toString().trim()
+
+            // Logic: filter by category, then by month if present
+            if (selectedCategoryId != null) {
+                dao.getExpensesByCategory(selectedCategoryId!!).observe(viewLifecycleOwner) { categoryExpenses ->
+                    val filtered = if (selectedMonthYear.isNotEmpty()) {
+                        categoryExpenses.filter { it.monthYear.equals(selectedMonthYear, ignoreCase = true) }
+                    } else {
+                        categoryExpenses
+                    }
+                    adapter.updateData(filtered)
+                }
+            } else if (selectedMonthYear.isNotEmpty()) {
+                dao.getExpensesByMonthYear(selectedMonthYear).observe(viewLifecycleOwner) { monthExpenses ->
+                    adapter.updateData(monthExpenses)
+                }
+            } else {
+                dao.getAllExpenses().observe(viewLifecycleOwner) { allExpenses ->
+                    adapter.updateData(allExpenses)
                 }
             }
         }
@@ -108,21 +110,12 @@ class expensesList : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment expensesList.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             expensesList().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString("param1", param1)
+                    putString("param2", param2)
                 }
             }
     }
