@@ -24,7 +24,7 @@
             android:id="@+id/etLoginUsername"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:hint="Username"
+            android:hint="Email"
             android:backgroundTint="@color/primaryPink"
             android:drawableLeft="@android:drawable/ic_menu_myplaces"
             android:padding="12dp" />

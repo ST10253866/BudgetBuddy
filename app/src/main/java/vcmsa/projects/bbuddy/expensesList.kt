@@ -45,7 +45,7 @@ class expensesList : Fragment() {
         binding.rvExpenses.adapter = adapter
 
         // Load all expenses initially
-        dao.getAllExpenses().observe(viewLifecycleOwner) { allExpenses ->
+        dao.getExpensesByUser(userId).observe(viewLifecycleOwner) { allExpenses ->
             adapter.updateData(allExpenses)
         }
 
