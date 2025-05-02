@@ -1,5 +1,5 @@
 Introduction  
-
+===============
 This application Budget buddy is a budget tracker app that makes use of data persistence, good user-friendly interfaces 
 application is an android studio application.
 
@@ -8,7 +8,7 @@ application is an android studio application.
  
 
 Installation steps 
-
+===============
 -Ensure that you have Android studio installed on your laptop or desktop. 
 
 -You can then proceed to download the source code from the GitHub repository provided onto your machine.  
@@ -18,19 +18,19 @@ Installation steps
  
 
 Change log  
-
+===============
 Our part one design did not meet user expectations so we changed the user interfaces to make them look more friendly and easy to use 
 
   
 
 Usage 
-
+===============
 -To get access and run this program you will need to do get the source code from the GitHub repository provided and run the program using Android studio that you have on your computer. From here you can run the program on Android studio and follow the prompts or steps that the program will show you. 
 
  
 
 How to use  
-
+===============
 -The user will need to open the app when once downloaded, they will need to create an account to use the app. The user will have to enter their first name, last name, the income they make in rands, their email and set a password then click the register button to register, however if they already have an account, they can click the link below the button. 
 
 -If users click the link to take them to the log in page, they can enter their email in the email box and enter their password in the password box and then click the log in button to log into application. 
@@ -50,12 +50,12 @@ How to use
  
 
 Role  
-
+===============
 User – This user can use this app to budget themselves 
 
  
 Login details for a user in system below: 
-
+===============
 Email - vv@gmail.com  
 
 Password - 654321 
@@ -63,7 +63,7 @@ Password - 654321
  
 
 Functional-Requirements 
-
+===============
 -The user will be able to register using their first name , last name , income and email  
 
 -The user must be able to log into the app using a password and email. 
@@ -82,7 +82,7 @@ Functional-Requirements
  
 
 Non-Functional-Requirements 
-
+===============
 -The application is an Android studio application. 
 
 -The application contains comments that explain what the methods do and define the program logic. 
@@ -98,13 +98,13 @@ Non-Functional-Requirements
  
 
 GitHub Link 
-
+==============
 https://github.com/ST10253866/BudgetBuddy 
 
  
 
 Credits 
-
+=========
 Documentation( and comments in code) and validation   
 
 Karan Moodley – ST10256361  
@@ -138,7 +138,7 @@ Contact: (Email) ST10253866@vcconnect.edu.za
  
 
 References(Code attributions) 
-
+===============
 GeeksforGeeks (2025) Introduction to Fragments | Android. https://www.geeksforgeeks.org/introduction-fragments-android/ 
   
 
