@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ExpenseAdapter(
-    private var expenses: List<expenseEntity>
+    private var expenses: List<FirestoreExpense>
 ) : RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
     inner class ExpenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,7 +29,7 @@ class ExpenseAdapter(
         val expense = expenses[position]
         holder.tvName.text = expense.name
         holder.tvDesc.text = expense.description
-        holder.tvAmount.text = "R %.2f".format(expense.Amount)
+        holder.tvAmount.text = "R %.2f".format(expense.amount)
         holder.tvDate.text = expense.monthYear
 
         if (expense.imageUri.isNotEmpty()) {
@@ -42,7 +42,7 @@ class ExpenseAdapter(
 
     override fun getItemCount(): Int = expenses.size
 
-    fun updateData(newExpenses: List<expenseEntity>) {
+    fun updateData(newExpenses: List<FirestoreExpense>) {
         expenses = newExpenses
         notifyDataSetChanged()
     }

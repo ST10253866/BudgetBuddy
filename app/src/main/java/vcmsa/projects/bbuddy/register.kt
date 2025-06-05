@@ -1,6 +1,5 @@
 package vcmsa.projects.bbuddy
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -37,8 +36,7 @@ private const val ARG_PARAM2 = "param2"
             findNavController().navigate(R.id.action_register_to_login)
         }
 
-        val db = BBuddyDatabase.getDatabase(requireContext())
-        val dao = db.bbuddyDAO()
+        val dao = bbuddyFirestoreDAO()
 
         binding.btnRegister.setOnClickListener {
             // Check if all fields are filled
@@ -67,6 +65,7 @@ private const val ARG_PARAM2 = "param2"
                                     income = binding.etRegisterIncome.text.toString().toDouble()
                                          // will work because XML only takes numeric values
                                 )
+                                dao.insertUser(user)
 
                                 // Insert into Room DB off the main thread
                                 Thread {

@@ -17,14 +17,14 @@ import vcmsa.projects.bbuddy.databinding.FragmentExpensesListBinding
 
 class expensesList : Fragment() {
 
-    private var selectedCategoryId: Int? = null
+    private var selectedCategoryId: String? = null
     private var selectedImageUri: Uri? = null
     private var _binding: FragmentExpensesListBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: ExpenseAdapter
     private lateinit var dao: bbuddyDAO
-    private val userId: Int by lazy { UserSession.userId ?: 0 }
+    private val userId: String by lazy { UserSession.fbUid ?: "" }
 
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let { selectedImageUri = it }
@@ -36,8 +36,7 @@ class expensesList : Fragment() {
     ): View {
         _binding = FragmentExpensesListBinding.inflate(inflater, container, false)
 
-        val db = BBuddyDatabase.getDatabase(requireContext())
-        dao = db.bbuddyDAO()
+        val dao = bbuddyFirestoreDAO()
 
         // Set up RecyclerView
         adapter = ExpenseAdapter(emptyList())

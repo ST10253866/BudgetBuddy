@@ -17,21 +17,16 @@ import vcmsa.projects.bbuddy.databinding.FragmentCategorySummaryBinding
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [categorySummary.newInstance] factory method to
- * create an instance of this fragment.
- */
 class categorySummary : Fragment() {
-    // TODO: Rename and change types of parameters
+
     private var param1: String? = null
     private var param2: String? = null
-    var selectedCategoryId: Int? = null //need be declared for both listeners
 
+    private var selectedCategoryId: String? = null
     private var _binding: FragmentCategorySummaryBinding? = null
     private val binding get() = _binding!!
 
-    private var userCategories: List<categoryEntity> = emptyList() // Store fetched categories
+    private var userCategories: List<FirestoreCategory> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,43 +42,33 @@ class categorySummary : Fragment() {
     ): View {
         _binding = FragmentCategorySummaryBinding.inflate(inflater, container, false)
 
-        val db = BBuddyDatabase.getDatabase(requireContext())
-        val dao = db.bbuddyDAO()
-        val userId = UserSession.userId ?: 0
+        val dao = bbuddyFirestoreDAO()
+        val userId = UserSession.fbUid ?: ""
 
-        // Observing categories and populating spinner
+        // Fetch categories and populate spinner
         dao.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->
             categories?.let {
-                userCategories = it // Save locally
+                userCategories = it
 
-                Log.d("AddExpenseFragment", "Fetched Categories: $it")  // Log categories for debugging
+                Log.d("CategorySummaryFragment", "Fetched Categories: $it")
 
                 if (it.isEmpty()) {
-                    var col = Color.rgb(136, 136, 136)
-                    binding.btnSaveCategory.setBackgroundColor(col)
+                    binding.btnSaveCategory.setBackgroundColor(Color.rgb(136, 136, 136))
                     Toast.makeText(requireContext(), "No categories available.", Toast.LENGTH_SHORT).show()
                 } else {
-                    var col = Color.rgb(137, 201, 163)
-                    binding.btnSaveCategory.setBackgroundColor(col)
-                    val categoryNames = it.map { category -> category.name }
+                    binding.btnSaveCategory.setBackgroundColor(Color.rgb(137, 201, 163))
 
+                    val categoryNames = it.map { category -> category.name }
                     val adapter = ArrayAdapter(
                         requireContext(),
                         R.layout.simple_spinner_item,
                         categoryNames
                     )
-
                     adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
                     binding.spnCategory.adapter = adapter
 
-                    // Spinner item selection listener
                     binding.spnCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
+                        override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                             val selectedCategory = it[position]
                             selectedCategoryId = selectedCategory.id
 
@@ -109,39 +94,47 @@ class categorySummary : Fragment() {
             findNavController().navigate(vcmsa.projects.bbuddy.R.id.action_categorySummary_to_home)
         }
 
-        //everything here should be called update not register... ffs
         binding.btnSaveCategory.setOnClickListener {
             if (binding.etCategoryName.text.isNotEmpty() &&
                 binding.etCategoryDescription.text.isNotEmpty() &&
-                binding.etMaxGoal.text.isNotEmpty() &&
                 binding.etMinGoal.text.isNotEmpty() &&
+                binding.etMaxGoal.text.isNotEmpty() &&
                 selectedCategoryId != null
             ) {
-                if (binding.etMinGoal.text.toString().toDouble() >= binding.etMaxGoal.text.toString().toDouble()){
-                    Toast.makeText(requireActivity(), "Minimum goal must be less than the maximum goal", Toast.LENGTH_SHORT).show()
-                } else {
-                    val categoryToUpdate = userCategories.find { it.id == selectedCategoryId }
+                val minGoal = binding.etMinGoal.text.toString().toDoubleOrNull()
+                val maxGoal = binding.etMaxGoal.text.toString().toDoubleOrNull()
 
-                    categoryToUpdate?.let {
-                        val updatedCategory = it.copy(
-                            name = binding.etCategoryName.text.toString(),
-                            minAmount = binding.etMinGoal.text.toString().toDoubleOrNull() ?: 0.0,
-                            maxAmount = binding.etMaxGoal.text.toString().toDoubleOrNull() ?: 0.0
-                        )
-
-                        Thread {
-                            dao.updateCategory(updatedCategory)
-                            requireActivity().runOnUiThread {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Category updated successfully",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }.start()
-                    } ?: Toast.makeText(requireContext(), "Category not found.", Toast.LENGTH_SHORT).show()
+                if (minGoal == null || maxGoal == null) {
+                    Toast.makeText(requireContext(), "Invalid goal amounts.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
                 }
 
+                if (minGoal >= maxGoal) {
+                    Toast.makeText(requireActivity(), "Minimum goal must be less than the maximum goal.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val categoryToUpdate = userCategories.find { it.id == selectedCategoryId }
+
+                categoryToUpdate?.let {
+                    val updatedCategory = it.copy(
+                        name = binding.etCategoryName.text.toString(),
+                        description = binding.etCategoryDescription.text.toString(),
+                        minAmount = minGoal,
+                        maxAmount = maxGoal
+                    )
+
+                    Thread {
+                        dao.updateCategory(updatedCategory)
+                        requireActivity().runOnUiThread {
+                            Toast.makeText(
+                                requireContext(),
+                                "Category updated successfully.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }.start()
+                } ?: Toast.makeText(requireContext(), "Category not found.", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(requireContext(), "Please fill all fields.", Toast.LENGTH_SHORT).show()
             }
@@ -156,15 +149,6 @@ class categorySummary : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment categorySummary.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             categorySummary().apply {

@@ -19,8 +19,8 @@ class createCategory : Fragment() {
         super.onCreate(savedInstanceState)
 
 
-        val db = BBuddyDatabase.getDatabase(requireContext())
-        val dao = db.bbuddyDAO()
+
+       val dao = bbuddyFirestoreDAO()
 
         binding.btnCatBack.setOnClickListener {
             findNavController().navigate(R.id.action_createCategory_to_home)
@@ -37,13 +37,14 @@ class createCategory : Fragment() {
                 ) {
                     try {
                         // Create a new category entity
-                        val category = categoryEntity(
-                            userId = UserSession.userId ?: 0,  // setting the fk defaults to 0 if null
+                        val category = FirestoreCategory(
+                            userId = UserSession.fbUid ?: "badData",
                             name = binding.etCategoryName.text.toString(),
                             description = binding.etCategoryDescription.text.toString(),
                             maxAmount = binding.etMaxGoal.text.toString().toDouble(),
                             minAmount = binding.etMinGoal.text.toString().toDouble()
                         )
+
 
                         // Insert into the database in a background thread
                         Thread {
