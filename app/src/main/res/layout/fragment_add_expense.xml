@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundBlush"
+    android:focusable="false"
     android:padding="16dp">
 
     <LinearLayout
@@ -43,15 +43,15 @@
             android:layout_width="match_parent"
             android:layout_height="57dp"
             android:layout_marginTop="8dp"
+            android:digits="1234567890/"
             android:hint="MM/YYYY"
-            android:maxLength="7"
-            android:digits="1234567890/" />
+            android:maxLength="7" />
 
         <Spinner
             android:id="@+id/spnCategories"
             android:layout_width="match_parent"
             android:layout_height="63dp"
-            android:spinnerMode="dropdown"/>
+            android:spinnerMode="dropdown" />
 
         <ImageView
             android:id="@+id/imgExpensePhoto"
@@ -60,14 +60,14 @@
             android:layout_marginTop="16dp"
             android:background="@android:color/darker_gray"
             android:contentDescription="Expense Photo"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY" />
 
         <Button
             android:id="@+id/btnUploadPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upload Photo"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:text="Upload Photo" />
 
         <Button
             android:id="@+id/btnSaveExpense"

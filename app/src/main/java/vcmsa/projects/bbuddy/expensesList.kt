@@ -1,5 +1,6 @@
 package vcmsa.projects.bbuddy
 
+import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -9,11 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import vcmsa.projects.bbuddy.databinding.FragmentExpensesListBinding
+import java.util.Calendar
 
 class expensesList : Fragment() {
 
@@ -35,6 +38,9 @@ class expensesList : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentExpensesListBinding.inflate(inflater, container, false)
+
+        setupDatePickers()
+        binding.startDateEditText.isFocusable = false
 
         val dao = bbuddyFirestoreDAO()
 
@@ -106,6 +112,23 @@ class expensesList : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun setupDatePickers() {
+        val calendar = Calendar.getInstance()
+        val showDatePicker: (EditText) -> Unit = { editText ->
+            DatePickerDialog(
+                this.requireContext(),
+                { _, year, month, dayOfMonth ->
+                    editText.setText(String.format("%02d/%02d", month + 1, year))
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        binding.startDateEditText.setOnClickListener { showDatePicker(binding.startDateEditText) }
     }
 
     override fun onDestroyView() {

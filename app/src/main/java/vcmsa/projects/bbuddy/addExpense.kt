@@ -1,5 +1,6 @@
 package vcmsa.projects.bbuddy
 
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -7,12 +8,14 @@ import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import vcmsa.projects.bbuddy.databinding.FragmentAddExpenseBinding
+import java.util.Calendar
 
 class addExpense : Fragment() {
 
@@ -33,7 +36,8 @@ class addExpense : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setupDatePickers()
+        binding.etMonthYear.isFocusable = false
         val userId = UserSession.fbUid ?: ""
 
         // Observe user's categories and populate spinner
@@ -73,6 +77,23 @@ class addExpense : Fragment() {
                 }
             }
         })
+    }
+
+    private fun setupDatePickers() {
+        val calendar = Calendar.getInstance()
+        val showDatePicker: (EditText) -> Unit = { editText ->
+            DatePickerDialog(
+                this.requireContext(),
+                { _, year, month, dayOfMonth ->
+                    editText.setText(String.format("%02d/%02d", month + 1, year))
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        binding.etMonthYear.setOnClickListener { showDatePicker(binding.etMonthYear) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
