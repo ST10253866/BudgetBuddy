@@ -20,25 +20,18 @@
             android:textColor="@color/primaryPink"
             android:layout_marginBottom="16dp"/>
 
+        <com.github.mikephil.charting.charts.BarChart
+            android:layout_width="match_parent"
+            android:layout_height="512dp"
+            android:layout_margin="10dp"
+            android:id="@+id/barChart">
+        </com.github.mikephil.charting.charts.BarChart>
+
         <Button
             android:id="@+id/btnGraphBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Back" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:contentDescription="Graph"
-            android:scaleType="fitCenter"
-            android:src="@drawable/graph" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Coming soon Watch this space!"
-            android:textAlignment="center"
-            android:textSize="48sp" />
     </LinearLayout>
 </ScrollView>

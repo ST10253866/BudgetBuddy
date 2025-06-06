@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.androidx.room.common.jvm)
 }
 
+
 kotlin {
     jvmToolchain(8)
 }
