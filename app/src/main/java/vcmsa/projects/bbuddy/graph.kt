@@ -21,7 +21,9 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import vcmsa.projects.bbuddy.databinding.FragmentGraphBinding
 import java.util.Calendar
 import kotlin.math.max
@@ -88,35 +90,48 @@ class graph : Fragment() {
     private fun loadChartData() {
         if (userCategories.isEmpty()) return
 
+        // Clear and reinitialize with proper size
         spendingValues.clear()
         minGoalValues.clear()
         maxGoalValues.clear()
 
-        // For each category, get expenses and calculate totals
-        for ((index, category) in userCategories.withIndex()) {
-            lifecycleScope.launch {
-                try {
-                    val expenses = if (startDate != null && endDate != null) {
-                        dao.getExpensesByCategoryAndDateRange(
-                            userId,
-                            category.id.toString(),
-                            startDate!!,
-                            endDate!!
-                        ).value ?: emptyList()
-                    } else {
-                        dao.getExpensesByCategory(category.id.toString()).value ?: emptyList()
+        // Initialize all entries first with zero values
+        userCategories.forEachIndexed { index, _ ->
+            spendingValues.add(BarEntry(index.toFloat(), 0f))
+            minGoalValues.add(BarEntry(index.toFloat(), 0f))
+            maxGoalValues.add(BarEntry(index.toFloat(), 0f))
+        }
+
+        lifecycleScope.launch {
+            try {
+                userCategories.forEachIndexed { index, category ->
+                    val expenses = withContext(Dispatchers.IO) {
+                        if (startDate != null && endDate != null) {
+                            dao.getExpensesByCategoryAndDateRange(
+                                userId,
+                                category.id,
+                                startDate!!,
+                                endDate!!
+                            ).value ?: emptyList()
+                        } else {
+                            dao.getExpensesByCategory(category.id).value ?: emptyList()
+                        }
                     }
 
                     val totalSpending = expenses.sumOf { it.amount }.toFloat()
 
-                    spendingValues.add(BarEntry(index.toFloat(), totalSpending))
-                    minGoalValues.add(BarEntry(index.toFloat(), category.minAmount.toFloat()))
-                    maxGoalValues.add(BarEntry(index.toFloat(), category.maxAmount.toFloat()))
-
-                    setupChart()
-                } catch (e: Exception) {
-                    Log.e("Graph", "Error loading data", e)
+                    // Update the pre-initialized entries
+                    spendingValues[index] = BarEntry(index.toFloat(), totalSpending)
+                    minGoalValues[index] = BarEntry(index.toFloat(), category.minAmount.toFloat())
+                    maxGoalValues[index] = BarEntry(index.toFloat(), category.maxAmount.toFloat())
                 }
+
+                // Ensure UI update happens on main thread
+                withContext(Dispatchers.Main) {
+                    setupChart()
+                }
+            } catch (e: Exception) {
+                Log.e("Graph", "Error loading data", e)
             }
         }
     }
@@ -141,7 +156,7 @@ class graph : Fragment() {
         // Combine datasets
         val data = BarData(spendingDataSet, minGoalDataSet, maxGoalDataSet).apply {
             barWidth = 0.25f
-            groupBars(0f, 0.4f, 0.05f)
+            groupBars(0f, 0.2f, 0.05f)
         }
 
         // X-axis config (kept same as before)
@@ -153,7 +168,7 @@ class graph : Fragment() {
             labelCount = userCategories.size
         }
 
-        // Chart config (kept same as before)
+        //chart config
         binding.barChart.apply {
             description.isEnabled = false
             setMaxVisibleValueCount(25)
@@ -168,7 +183,6 @@ class graph : Fragment() {
         }
     }
 
-    // Keep your existing date picker and click listener methods exactly as they were
     private fun setupDatePickers() {
         val calendar = Calendar.getInstance()
         val showDatePicker: (EditText) -> Unit = { editText ->
