@@ -161,6 +161,67 @@ class bbuddyFirestoreDAO {
         return liveData
     }
 
+    fun getExpensesByCategoryAndDateRange(
+        userId: String,
+        categoryId: String,
+        startDate: String, // Format: "MM/YYYY"
+        endDate: String   // Format: "MM/YYYY"
+    ): LiveData<List<FirestoreExpense>> {
+        val liveData = MutableLiveData<List<FirestoreExpense>>()
+
+        // Parse the date strings into comparable values
+        val startParts = startDate.split("/")
+        val endParts = endDate.split("/")
+
+        if (startParts.size != 2 || endParts.size != 2) {
+            liveData.postValue(emptyList())
+            return liveData
+        }
+
+        val startMonth = startParts[0].toInt()
+        val startYear = startParts[1].toInt()
+        val endMonth = endParts[0].toInt()
+        val endYear = endParts[1].toInt()
+
+        db.collection("expenses")
+            .whereEqualTo("userId", userId)
+            .whereEqualTo("categoryId", categoryId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.e("FirestoreDAO", "Listen failed: ${error.message}")
+                    liveData.postValue(emptyList())
+                    return@addSnapshotListener
+                }
+
+                val filteredExpenses = snapshot?.documents?.mapNotNull { doc ->
+                    val expense = doc.toObject(FirestoreExpense::class.java)
+                    expense?.let {
+                        // Parse the expense's monthYear (format: "MM/YYYY")
+                        val expenseParts = it.monthYear.split("/")
+                        if (expenseParts.size == 2) {
+                            val expenseMonth = expenseParts[0].toInt()
+                            val expenseYear = expenseParts[1].toInt()
+
+                            // Check if expense date is within range
+                            when {
+                                expenseYear < startYear -> null
+                                expenseYear == startYear && expenseMonth < startMonth -> null
+                                expenseYear > endYear -> null
+                                expenseYear == endYear && expenseMonth > endMonth -> null
+                                else -> it
+                            }
+                        } else {
+                            null
+                        }
+                    }
+                } ?: emptyList()
+
+                liveData.postValue(filteredExpenses)
+            }
+
+        return liveData
+    }
+
     fun getAllExpenses(): LiveData<List<FirestoreExpense>> {
         val liveData = MutableLiveData<List<FirestoreExpense>>()
         db.collection("expenses").addSnapshotListener { snapshot, error ->

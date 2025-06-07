@@ -20,9 +20,33 @@
             android:textColor="@color/primaryPink"
             android:layout_marginBottom="16dp"/>
 
+        <EditText
+            android:id="@+id/edtStart"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_marginTop="8dp"
+            android:digits="1234567890/"
+            android:hint="Start Date"
+            android:maxLength="7" />
+
+        <EditText
+            android:id="@+id/edtEnd"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_marginTop="8dp"
+            android:digits="1234567890/"
+            android:hint="End Date"
+            android:maxLength="7" />
+
+        <Button
+            android:id="@+id/btnApply"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:text="Apply"/>
+
         <com.github.mikephil.charting.charts.BarChart
             android:layout_width="match_parent"
-            android:layout_height="512dp"
+            android:layout_height="450dp"
             android:layout_margin="10dp"
             android:id="@+id/barChart">
         </com.github.mikephil.charting.charts.BarChart>

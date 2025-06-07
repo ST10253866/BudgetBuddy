@@ -1,12 +1,18 @@
 package vcmsa.projects.bbuddy
 
+import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -15,7 +21,10 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import kotlinx.coroutines.launch
 import vcmsa.projects.bbuddy.databinding.FragmentGraphBinding
+import java.util.Calendar
+import kotlin.math.max
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,129 +40,156 @@ class graph : Fragment() {
     private val binding: FragmentGraphBinding by lazy {
         FragmentGraphBinding.inflate(layoutInflater)
     }
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    val values = ArrayList<BarEntry>()
+    private val spendingValues = ArrayList<BarEntry>()
+    private val minGoalValues = ArrayList<BarEntry>()
+    private val maxGoalValues = ArrayList<BarEntry>()
     private val userId: String by lazy { UserSession.fbUid ?: "" }
-    var userCategories = ArrayList<String>()
-    val dao = bbuddyFirestoreDAO()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-
-        binding.btnGraphBack.setOnClickListener {
-            findNavController().navigate(R.id.action_graph_to_home)
-        }
-        dataListing()
-    }
+    private val userCategories = ArrayList<FirestoreCategory>() // Changed to store full category objects
+    private val dao = bbuddyFirestoreDAO()
+    private var startDate: String? = null
+    private var endDate: String? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
+        setupObservers()
+        setupClickListeners()
+        setupDatePickers()
 
+        binding.edtStart.isFocusable = false
+        binding.edtEnd.isFocusable = false
 
-
-        //get categories
-        /*dao.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->
-            if (categories.isNotEmpty()) {
-                val categoryNames = categories.map { it.name }
-                val categoryMap = categories.associateBy { it.name }
-
-                for (category in categoryNames){
-                    userCategories.add(category)
-                }
+        // Add apply filter button
+        binding.btnApply.setOnClickListener {
+            if (binding.edtStart.text.isNullOrEmpty() || binding.edtEnd.text.isNullOrEmpty()) {
+                Toast.makeText(context, "Please select both dates", Toast.LENGTH_SHORT).show()
             } else {
-                userCategories.add("no categories")
+                startDate = binding.edtStart.text.toString()
+                endDate = binding.edtEnd.text.toString()
+                loadChartData()
             }
-        }*/
-        dao.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->
-            userCategories.clear()
-
-            //if (categories.isNotEmpty()) {
-                userCategories.addAll(categories.map { it.name })
-            /*} else {
-                userCategories.add("no categories")
-            }*/
         }
 
         return binding.root
     }
 
-    private fun dataListing(){
-        values.add(BarEntry(0.toFloat(), 6.toFloat()))
-        values.add(BarEntry(1.toFloat(), 4.toFloat()))
-        values.add(BarEntry(2.toFloat(), 8.toFloat()))
-        values.add(BarEntry(3.toFloat(), 18.toFloat()))
-        setChart()
-    }
-
-    private fun setChart(){
-        binding.barChart.description.isEnabled = false
-        binding.barChart.setMaxVisibleValueCount(25)
-        binding.barChart.setPinchZoom(false)
-        binding.barChart.setDrawBarShadow(false)
-        binding.barChart.setDrawGridBackground(false)
-
-        val xAxis = binding.barChart.xAxis
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.setDrawGridLines(false)
-        xAxis.granularity = 1f
-        xAxis.isGranularityEnabled = true
-
-
-
-        xAxis.valueFormatter = IndexAxisValueFormatter(userCategories)
-
-        binding.barChart.axisLeft.setDrawGridLines(false)
-        binding.barChart.legend.isEnabled = false
-
-        val barDataSetter: BarDataSet
-
-        if (binding.barChart.data != null && binding.barChart.data.dataSetCount > 0){
-            barDataSetter = binding.barChart.data.getDataSetByIndex(0) as BarDataSet
-            barDataSetter.values = values
-            binding.barChart.data.notifyDataChanged()
-            binding.barChart.notifyDataSetChanged()
-        } else {
-            barDataSetter = BarDataSet(values, "Data Set")
-            barDataSetter.setColors(*ColorTemplate.VORDIPLOM_COLORS)
-            barDataSetter.setDrawValues(false)
-
-            val dataSet = ArrayList<IBarDataSet>()
-            dataSet.add(barDataSetter)
-
-            val data = BarData(dataSet)
-            binding.barChart.data = data
-            binding.barChart.setFitBars(true)
+    private fun setupObservers() {
+        // Observe categories
+        dao.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->
+            userCategories.clear()
+            userCategories.addAll(categories)
+            loadChartData()
         }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment graph.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            graph().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun loadChartData() {
+        if (userCategories.isEmpty()) return
+
+        spendingValues.clear()
+        minGoalValues.clear()
+        maxGoalValues.clear()
+
+        // For each category, get expenses and calculate totals
+        for ((index, category) in userCategories.withIndex()) {
+            lifecycleScope.launch {
+                try {
+                    val expenses = if (startDate != null && endDate != null) {
+                        dao.getExpensesByCategoryAndDateRange(
+                            userId,
+                            category.id.toString(),
+                            startDate!!,
+                            endDate!!
+                        ).value ?: emptyList()
+                    } else {
+                        dao.getExpensesByCategory(category.id.toString()).value ?: emptyList()
+                    }
+
+                    val totalSpending = expenses.sumOf { it.amount }.toFloat()
+
+                    spendingValues.add(BarEntry(index.toFloat(), totalSpending))
+                    minGoalValues.add(BarEntry(index.toFloat(), category.minAmount.toFloat()))
+                    maxGoalValues.add(BarEntry(index.toFloat(), category.maxAmount.toFloat()))
+
+                    setupChart()
+                } catch (e: Exception) {
+                    Log.e("Graph", "Error loading data", e)
                 }
             }
+        }
+    }
 
+    private fun setupChart() {
+        // Create datasets
+        val spendingDataSet = BarDataSet(spendingValues, "Actual Spending").apply {
+            color = Color.rgb(255, 87, 34) // Orange
+            setDrawValues(true)
+        }
+
+        val minGoalDataSet = BarDataSet(minGoalValues, "Min Goal").apply {
+            color = Color.rgb(76, 175, 80) // Green
+            setDrawValues(true)
+        }
+
+        val maxGoalDataSet = BarDataSet(maxGoalValues, "Max Goal").apply {
+            color = Color.rgb(244, 67, 54) // Red
+            setDrawValues(true)
+        }
+
+        // Combine datasets
+        val data = BarData(spendingDataSet, minGoalDataSet, maxGoalDataSet).apply {
+            barWidth = 0.25f
+            groupBars(0f, 0.4f, 0.05f)
+        }
+
+        // X-axis config (kept same as before)
+        binding.barChart.xAxis.apply {
+            position = XAxis.XAxisPosition.BOTTOM
+            granularity = 1f
+            setDrawGridLines(false)
+            valueFormatter = IndexAxisValueFormatter(userCategories.map { it.name })
+            labelCount = userCategories.size
+        }
+
+        // Chart config (kept same as before)
+        binding.barChart.apply {
+            description.isEnabled = false
+            setMaxVisibleValueCount(25)
+            setPinchZoom(false)
+            setDrawBarShadow(false)
+            setDrawGridBackground(false)
+            axisLeft.setDrawGridLines(false)
+            legend.isEnabled = true
+            this.data = data
+            invalidate()
+            animateY(1000)
+        }
+    }
+
+    // Keep your existing date picker and click listener methods exactly as they were
+    private fun setupDatePickers() {
+        val calendar = Calendar.getInstance()
+        val showDatePicker: (EditText) -> Unit = { editText ->
+            DatePickerDialog(
+                this.requireContext(),
+                { _, year, month, dayOfMonth ->
+                    editText.setText(String.format("%02d/%02d", month + 1, year))
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        binding.edtStart.setOnClickListener { showDatePicker(binding.edtStart) }
+        binding.edtEnd.setOnClickListener { showDatePicker(binding.edtEnd) }
+    }
+
+    private fun setupClickListeners() {
+        binding.btnGraphBack.setOnClickListener {
+            findNavController().navigate(R.id.action_graph_to_home)
+        }
     }
 }
