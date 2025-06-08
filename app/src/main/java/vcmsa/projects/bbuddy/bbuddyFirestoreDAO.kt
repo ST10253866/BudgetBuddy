@@ -3,7 +3,9 @@ package vcmsa.projects.bbuddy
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 class bbuddyFirestoreDAO {
 
@@ -14,10 +16,8 @@ class bbuddyFirestoreDAO {
         db.collection("users").document(user.fbUid).set(user)
     }
 
-
     fun updateUser(user: FirestoreUser) =
         db.collection("users").document(user.id.toString()).set(user)
-
 
     fun deleteUser(user: FirestoreUser) {
         db.collection("users").document(user.id.toString()).delete()
@@ -35,39 +35,39 @@ class bbuddyFirestoreDAO {
         }
         return liveData
     }
-//this is defunct now
+
     fun getUserById(userId: Int): LiveData<FirestoreUser?> {
         val liveData = MutableLiveData<FirestoreUser?>()
-        db.collection("users").document(userId.toString()).addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                Log.e("FirestoreDAO", "Listen failed: ${error.message}")
-                return@addSnapshotListener
+        db.collection("users").document(userId.toString())
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.e("FirestoreDAO", "Listen failed: ${error.message}")
+                    return@addSnapshotListener
+                }
+                val user = snapshot?.toObject(FirestoreUser::class.java)
+                liveData.postValue(user)
             }
-            val user = snapshot?.toObject(FirestoreUser::class.java)
-            liveData.postValue(user)
-        }
         return liveData
     }
 
     fun getUserByFbUid(fbUid: String): LiveData<FirestoreUser?> {
         val liveData = MutableLiveData<FirestoreUser?>()
-        db.collection("users").document(fbUid).addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                Log.e("FirestoreDAO", "Listen failed: ${error.message}")
-                return@addSnapshotListener
+        db.collection("users").document(fbUid)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.e("FirestoreDAO", "Listen failed: ${error.message}")
+                    return@addSnapshotListener
+                }
+                val user = snapshot?.toObject(FirestoreUser::class.java)
+                liveData.postValue(user)
             }
-            val user = snapshot?.toObject(FirestoreUser::class.java)
-            liveData.postValue(user)
-        }
         return liveData
     }
-
-
 
     // Category operations
     fun insertCategory(category: FirestoreCategory) {
         val docRef = db.collection("categories").document()
-        category.id = docRef.id // assign Firestore's generated doc ID to the category object
+        category.id = docRef.id
         docRef.set(category)
     }
 
@@ -81,14 +81,15 @@ class bbuddyFirestoreDAO {
 
     fun getCategoriesByUser(userId: String): LiveData<List<FirestoreCategory>> {
         val liveData = MutableLiveData<List<FirestoreCategory>>()
-        db.collection("categories").whereEqualTo("userId", userId)
+        db.collection("categories")
+            .whereEqualTo("userId", userId)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     Log.e("FirestoreDAO", "Listen failed: ${error.message}")
                     return@addSnapshotListener
                 }
-                val categories = snapshot?.toObjects(FirestoreCategory::class.java) ?: emptyList()
-                liveData.postValue(categories)
+                val cats = snapshot?.toObjects(FirestoreCategory::class.java) ?: emptyList()
+                liveData.postValue(cats)
             }
         return liveData
     }
@@ -100,13 +101,13 @@ class bbuddyFirestoreDAO {
                 Log.e("FirestoreDAO", "Listen failed: ${error.message}")
                 return@addSnapshotListener
             }
-            val categories = snapshot?.toObjects(FirestoreCategory::class.java) ?: emptyList()
-            liveData.postValue(categories)
+            val cats = snapshot?.toObjects(FirestoreCategory::class.java) ?: emptyList()
+            liveData.postValue(cats)
         }
         return liveData
     }
 
-    // Expense operations
+    // Expense operations (LiveData-based)
     fun insertExpense(expense: FirestoreExpense) {
         db.collection("expenses").add(expense)
     }
@@ -121,7 +122,8 @@ class bbuddyFirestoreDAO {
 
     fun getExpensesByMonthYear(monthYear: String): LiveData<List<FirestoreExpense>> {
         val liveData = MutableLiveData<List<FirestoreExpense>>()
-        db.collection("expenses").whereEqualTo("monthYear", monthYear)
+        db.collection("expenses")
+            .whereEqualTo("monthYear", monthYear)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     Log.e("FirestoreDAO", "Listen failed: ${error.message}")
@@ -135,7 +137,8 @@ class bbuddyFirestoreDAO {
 
     fun getExpensesByUser(userId: String): LiveData<List<FirestoreExpense>> {
         val liveData = MutableLiveData<List<FirestoreExpense>>()
-        db.collection("expenses").whereEqualTo("userId", userId)
+        db.collection("expenses")
+            .whereEqualTo("userId", userId)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     Log.e("FirestoreDAO", "Listen failed: ${error.message}")
@@ -149,7 +152,8 @@ class bbuddyFirestoreDAO {
 
     fun getExpensesByCategory(categoryId: String): LiveData<List<FirestoreExpense>> {
         val liveData = MutableLiveData<List<FirestoreExpense>>()
-        db.collection("expenses").whereEqualTo("categoryId", categoryId)
+        db.collection("expenses")
+            .whereEqualTo("categoryId", categoryId)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     Log.e("FirestoreDAO", "Listen failed: ${error.message}")
@@ -165,23 +169,21 @@ class bbuddyFirestoreDAO {
         userId: String,
         categoryId: String,
         startDate: String, // Format: "MM/YYYY"
-        endDate: String   // Format: "MM/YYYY"
+        endDate: String    // Format: "MM/YYYY"
     ): LiveData<List<FirestoreExpense>> {
         val liveData = MutableLiveData<List<FirestoreExpense>>()
 
-        // Parse the date strings into comparable values
         val startParts = startDate.split("/")
         val endParts = endDate.split("/")
-
         if (startParts.size != 2 || endParts.size != 2) {
             liveData.postValue(emptyList())
             return liveData
         }
 
-        val startMonth = startParts[0].toInt()
-        val startYear = startParts[1].toInt()
-        val endMonth = endParts[0].toInt()
-        val endYear = endParts[1].toInt()
+        val sM = startParts[0].toInt()
+        val sY = startParts[1].toInt()
+        val eM = endParts[0].toInt()
+        val eY = endParts[1].toInt()
 
         db.collection("expenses")
             .whereEqualTo("userId", userId)
@@ -192,33 +194,20 @@ class bbuddyFirestoreDAO {
                     liveData.postValue(emptyList())
                     return@addSnapshotListener
                 }
-
-                val filteredExpenses = snapshot?.documents?.mapNotNull { doc ->
-                    val expense = doc.toObject(FirestoreExpense::class.java)
-                    expense?.let {
-                        // Parse the expense's monthYear (format: "MM/YYYY")
-                        val expenseParts = it.monthYear.split("/")
-                        if (expenseParts.size == 2) {
-                            val expenseMonth = expenseParts[0].toInt()
-                            val expenseYear = expenseParts[1].toInt()
-
-                            // Check if expense date is within range
-                            when {
-                                expenseYear < startYear -> null
-                                expenseYear == startYear && expenseMonth < startMonth -> null
-                                expenseYear > endYear -> null
-                                expenseYear == endYear && expenseMonth > endMonth -> null
-                                else -> it
-                            }
-                        } else {
-                            null
-                        }
+                val filtered = snapshot?.documents?.mapNotNull { doc ->
+                    doc.toObject(FirestoreExpense::class.java)?.let {
+                        val parts = it.monthYear.split("/")
+                        if (parts.size == 2) {
+                            val mm = parts[0].toInt()
+                            val yy = parts[1].toInt()
+                            if (!((yy < sY) || (yy == sY && mm < sM) || (yy > eY) || (yy == eY && mm > eM))) {
+                                it
+                            } else null
+                        } else null
                     }
                 } ?: emptyList()
-
-                liveData.postValue(filteredExpenses)
+                liveData.postValue(filtered)
             }
-
         return liveData
     }
 
@@ -233,5 +222,42 @@ class bbuddyFirestoreDAO {
             liveData.postValue(expenses)
         }
         return liveData
+    }
+
+    /**issue basically was the way data was read-- cause it was a bg coroutine. livedata gets updated on main, and since it was bg it wasnt
+     * too happy. this is syncornous or however ou spell it
+     * https://github.com/Kotlin/kotlinx.coroutines/blob/master/README.md the official docs explain it better ig
+     * https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/launch.html more specifcally */
+
+    /** Suspended fetch of expenses by category (no date filter) */
+    suspend fun getExpensesByCategorySuspend(categoryId: String): List<FirestoreExpense> {
+        val snapshot = db.collection("expenses")
+            .whereEqualTo("categoryId", categoryId)
+            .get()
+            .await()
+        return snapshot.toObjects(FirestoreExpense::class.java)
+    }
+
+    /** Suspended fetch of expenses by category + date-range */
+    suspend fun getExpensesByCategoryAndDateRangeSuspend(
+        userId: String,
+        categoryId: String,
+        startDate: String, // Format: "MM/YYYY"
+        endDate: String    // Format: "MM/YYYY"
+    ): List<FirestoreExpense> {
+        val snapshot = db.collection("expenses")
+            .whereEqualTo("userId", userId)
+            .whereEqualTo("categoryId", categoryId)
+            .get()
+            .await()
+
+        val (sM, sY) = startDate.split("/").map(String::toInt)
+        val (eM, eY) = endDate.split("/").map(String::toInt)
+
+        return snapshot.toObjects(FirestoreExpense::class.java).filter { it.monthYear.split("/").let { (m, y) ->
+            val mm = m.toInt()
+            val yy = y.toInt()
+            !((yy < sY) || (yy == sY && mm < sM) || (yy > eY) || (yy == eY && mm > eM))
+        }}
     }
 }
