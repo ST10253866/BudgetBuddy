@@ -96,10 +96,10 @@ class graph : Fragment() {
         maxGoalValues.clear()
 
         // Initialize all entries first with zero values
-        userCategories.forEachIndexed { index, _ ->
+        userCategories.forEachIndexed { index, category ->
             spendingValues.add(BarEntry(index.toFloat(), 0f))
-            minGoalValues.add(BarEntry(index.toFloat(), 0f))
-            maxGoalValues.add(BarEntry(index.toFloat(), 0f))
+            minGoalValues.add(BarEntry(index.toFloat(), category.minAmount.toFloat()))
+            maxGoalValues.add(BarEntry(index.toFloat(), category.maxAmount.toFloat()))
         }
 
         lifecycleScope.launch {
@@ -118,12 +118,11 @@ class graph : Fragment() {
                         }
                     }
 
+                    // Ensure expenses are not null and sum them
                     val totalSpending = expenses.sumOf { it.amount }.toFloat()
 
                     // Update the pre-initialized entries
                     spendingValues[index] = BarEntry(index.toFloat(), totalSpending)
-                    minGoalValues[index] = BarEntry(index.toFloat(), category.minAmount.toFloat())
-                    maxGoalValues[index] = BarEntry(index.toFloat(), category.maxAmount.toFloat())
                 }
 
                 // Ensure UI update happens on main thread
@@ -135,6 +134,7 @@ class graph : Fragment() {
             }
         }
     }
+
 
     private fun setupChart() {
         // Create datasets
@@ -207,3 +207,27 @@ class graph : Fragment() {
         }
     }
 }
+
+/*
+ *Attribution
+ *Website : geeksforgeeks
+ *Author : GeeksforGeeks Introduction to Fragments
+ *Url : https://www.geeksforgeeks.org/introduction-fragments-android/
+ *Accessed on :(Accessed on 19 April 2025)
+ */
+
+/*
+ *Attribution
+ *Website : geeksforgeeks
+ *Author : GeeksforGeeks Fragment Lifecycle in Android
+ *Url : https://www.geeksforgeeks.org/fragment-lifecycle-in-android/.
+ *Accessed on :(Accessed on 20 April 2025)
+ */
+
+/*
+ *Attribution
+ *Website : Youtube
+ *Author : Admin Grabs Media -Android Display Bar Graph using Kotlin
+ *Url- https://www.youtube.com/watch?v=-TGUV_LbcmE.
+ *Accessed on :(Accessed on 03 June 2025)
+ */

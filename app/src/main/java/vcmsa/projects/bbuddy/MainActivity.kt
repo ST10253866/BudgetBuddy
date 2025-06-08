@@ -40,6 +40,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-
-
+/*
+ *Attribution
+ *Website : geeksforgeeks
+ *Author : GeeksforGeeks Bottom Navigation Bar in Android.
+ *Url : https://www.geeksforgeeks.org/bottom-navigation-bar-in-android/.
+ *Accessed on :(Accessed on 23 April 2025)
+ */
+/*
+ *Attribution
+ *Website : Youtube
+ *Author : Foxandroid
+ *Url : https://www.youtube.com/watch?v=L_6poZGNXOo.
+ *Accessed on :(Accessed on 23 April 2025)
+ */

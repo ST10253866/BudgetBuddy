@@ -134,3 +134,18 @@ private const val ARG_PARAM2 = "param2"
     }
 }
 
+/*
+ *Attribution
+ *Website : geeksforgeeks
+ *Author : GeeksforGeeks Introduction to Fragments
+ *Url : https://www.geeksforgeeks.org/introduction-fragments-android/
+ *Accessed on :(Accessed on 19 April 2025)
+ */
+
+/*
+ *Attribution
+ *Website : geeksforgeeks
+ *Author : GeeksforGeeks Fragment Lifecycle in Android
+ *Url : https://www.geeksforgeeks.org/fragment-lifecycle-in-android/.
+ *Accessed on :(Accessed on 20 April 2025)
+ */
