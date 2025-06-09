@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_home_to_expensesList"
             app:destination="@id/expensesList" />
+        <action
+            android:id="@+id/action_home_to_categoryExpenseFragment"
+            app:destination="@id/categoryExpenseFragment" />
     </fragment>
     <fragment
         android:id="@+id/login"
@@ -112,4 +115,8 @@
         android:id="@+id/expensesList"
         android:name="vcmsa.projects.bbuddy.expensesList"
         android:label="expensesList" />
+    <fragment
+        android:id="@+id/categoryExpenseFragment"
+        android:name="vcmsa.projects.bbuddy.ui.CategoryExpenseFragment"
+        android:label="CategoryExpenseFragment" />
 </navigation>

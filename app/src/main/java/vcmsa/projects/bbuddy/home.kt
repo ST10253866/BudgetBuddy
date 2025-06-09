@@ -52,6 +52,10 @@ class home : Fragment() {
         binding.btnViewGraph.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_graph)
         }
+
+        binding.btnCatExp.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_categoryExpenseFragment)
+        }
         //end of nav stuff
     }
 

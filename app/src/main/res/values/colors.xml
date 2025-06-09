@@ -13,4 +13,7 @@
     <!-- Additional Neutral Shades (optional, for borders or cards) -->
     <color name="lightGray">#DDDDDD</color>
     <color name="mediumGray">#888888</color>
+
+    <!--for the catExps-->
+    <color name="overSpentRed">#E57373</color>
 </resources>

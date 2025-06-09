@@ -65,5 +65,14 @@
             android:textColor="@color/white"
             android:layout_marginTop="12dp"/>
 
+        <Button
+            android:id="@+id/btnCatExp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/primaryPink"
+            android:text="View Category Utilization idk"
+            android:textColor="@color/white" />
+
     </LinearLayout>
 </ScrollView>
