@@ -26,6 +26,14 @@ class createCategory : Fragment() {
             binding.etMaxGoal.hint = "Maksimum maandelikse bestedingsdoelwit"
             binding.etMinGoal.hint = "Minimum maandelikse bestedingsdoelwit"
             binding.btnSaveCategory.hint = "Wysig kategorie"
+        } else {
+            binding.txtTitle.text = "Create new category"
+            binding.btnCatBack.text = "back"
+            binding.etCategoryName.hint = "category name"
+            binding.etCategoryDescription.hint = "category description (optional)"
+            binding.etMaxGoal.hint = "max spending goal"
+            binding.etMinGoal.hint = "Min spending goal"
+            binding.btnSaveCategory.hint = "Save category"
         }
 
        val dao = bbuddyFirestoreDAO()

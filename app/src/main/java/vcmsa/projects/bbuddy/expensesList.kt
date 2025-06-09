@@ -46,6 +46,11 @@ class expensesList : Fragment() {
             binding.btnListBack.text = "Terug"
             binding.btnFilter.text = "Filterlys"
             binding.startDateEditText.hint = "Kies Datum"
+        } else {
+            binding.txtTitle.text = "Your Expenses"
+            binding.btnListBack.text = "Back"
+            binding.btnFilter.text = "Filter List"
+            binding.startDateEditText.hint = "Select date"
         }
 
         setupDatePickers()

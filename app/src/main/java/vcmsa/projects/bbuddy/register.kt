@@ -48,6 +48,15 @@ private const val ARG_PARAM2 = "param2"
             binding.etRegisterPassword.hint = "wagwoord"
             binding.btnRegister.text = "Registreer"
             binding.tvGoToLogin.text = "Het jy reeds 'n rekening? Meld aan"
+        } else {
+            binding.txtTitle.text = "Create account"
+            binding.etRegisterIncome.hint = "Income"
+            binding.etRegisterFirstname.hint = "First name"
+            binding.etRegisterLastname.hint = "Last Name"
+            binding.etRegisterEmail.hint = "email"
+            binding.etRegisterPassword.hint = "password"
+            binding.btnRegister.text = "Register"
+            binding.tvGoToLogin.text = "Already have an account? Log in"
         }
 
         binding.btnRegister.setOnClickListener {

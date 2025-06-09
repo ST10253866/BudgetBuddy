@@ -35,6 +35,12 @@ class profile : Fragment() {
             binding.etRegisterFirstname.hint = "Voornaam"
             binding.etRegisterLastname.hint = "vannaam"
             binding.btnRegister.text = "Opdateer Profiel"
+        } else {
+            binding.txtTitle.text = "profile"
+            binding.etRegisterIncome.hint = "Income"
+            binding.etRegisterFirstname.hint = "First Name"
+            binding.etRegisterLastname.hint = "Last Name"
+            binding.btnRegister.text = "Update Profile"
         }
 
         val fbUid = UserSession.fbUid
@@ -73,6 +79,12 @@ class profile : Fragment() {
                 binding.etRegisterFirstname.hint = "Voornaam"
                 binding.etRegisterLastname.hint = "vannaam"
                 binding.btnRegister.text = "Opdateer Profiel"
+            } else {
+                binding.txtTitle.text = "profile"
+                binding.etRegisterIncome.hint = "Income"
+                binding.etRegisterFirstname.hint = "First Name"
+                binding.etRegisterLastname.hint = "Last Name"
+                binding.btnRegister.text = "Update Profile"
             }
 
             if (binding.etRegisterIncome.text.isNotEmpty() &&

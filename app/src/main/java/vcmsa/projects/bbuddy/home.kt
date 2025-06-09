@@ -65,6 +65,12 @@ class home : Fragment() {
             binding.btnViewExpenses.text = "Bekyk uitgawes"
             binding.btnAddExpense.text = "Voeg uitgawes by"
             binding.btnAddCategory.text = "Skep kategorie"
+        } else {
+            binding.txtTitle.text = "Welcome to budget buddy"
+            binding.btnViewGraph.text = "View Graph"
+            binding.btnViewExpenses.text = "View Expenses"
+            binding.btnAddExpense.text = "Add Expense"
+            binding.btnAddCategory.text = "Create Category"
         }
 
         return binding.root

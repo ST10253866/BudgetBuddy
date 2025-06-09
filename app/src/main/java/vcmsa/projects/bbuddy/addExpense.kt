@@ -48,6 +48,13 @@ class addExpense : Fragment() {
             binding.etExpenseDescription.hint = "Wenk"
             binding.btnUploadPhoto.text = "Laai foto op"
             binding.btnSaveExpense.text = "bespaar uitgawes"
+        } else {
+            binding.btnAddBack.text = "back"
+            binding.etExpenseName.hint = "name"
+            binding.etExpenseAmount.hint = "Amount"
+            binding.etExpenseDescription.hint = "Description"
+            binding.btnUploadPhoto.text = "Upload photo"
+            binding.btnSaveExpense.text = "Save expenses"
         }
 
         // Observe user's categories and populate spinner

@@ -32,6 +32,12 @@ class login : Fragment() {
             binding.etLoginUsername.hint = "e-pos"
             binding.btnLogin.text = "aanmeld"
             binding.tvGoToRegister.text = "Het jy nie 'n rekening nie? Registreer hier"
+        } else {
+            binding.txtTitle.text = "Welcome back"
+            binding.etLoginPassword.hint = "password"
+            binding.etLoginUsername.hint = "email"
+            binding.btnLogin.text = "Login"
+            binding.tvGoToRegister.text = "Don’t have an account? Register here"
         }
 
         return binding.root

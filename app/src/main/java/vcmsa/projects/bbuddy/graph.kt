@@ -67,6 +67,12 @@ class graph : Fragment() {
             binding.edtStart.hint = "Begindatum"
             binding.btnApply.text = "Dien toe"
             binding.btnGraphBack.text = "Terug"
+        } else {
+            binding.txtTitle.text = "Spending Graph"
+            binding.edtEnd.hint = "End date"
+            binding.edtStart.hint = "start date"
+            binding.btnApply.text = "Apply"
+            binding.btnGraphBack.text = "Back"
         }
 
         // Add apply filter button
