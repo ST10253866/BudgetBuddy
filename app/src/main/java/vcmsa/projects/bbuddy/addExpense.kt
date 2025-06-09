@@ -1,5 +1,6 @@
 package vcmsa.projects.bbuddy
 
+import UserSession
 import android.app.DatePickerDialog
 import android.graphics.Color
 import android.net.Uri
@@ -39,6 +40,15 @@ class addExpense : Fragment() {
         setupDatePickers()
         binding.etMonthYear.isFocusable = false
         val userId = UserSession.fbUid ?: ""
+
+        if (UserSession.lang == "Af"){
+            binding.btnAddBack.text = "terug"
+            binding.etExpenseName.hint = "naam"
+            binding.etExpenseAmount.hint = "Bedrag"
+            binding.etExpenseDescription.hint = "Wenk"
+            binding.btnUploadPhoto.text = "Laai foto op"
+            binding.btnSaveExpense.text = "bespaar uitgawes"
+        }
 
         // Observe user's categories and populate spinner
         dao.getCategoriesByUser(userId).observe(this, Observer { categories ->

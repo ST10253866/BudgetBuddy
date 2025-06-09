@@ -1,11 +1,12 @@
 package vcmsa.projects.bbuddy
 
+import UserSession
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import vcmsa.projects.bbuddy.databinding.FragmentHomeBinding
 
@@ -58,8 +59,18 @@ class home : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (UserSession.lang == "Af"){
+            binding.txtTitle.text = "Welkom by begrotingsmaat"
+            binding.btnViewGraph.text = "Bekyk Grafiek"
+            binding.btnViewExpenses.text = "Bekyk uitgawes"
+            binding.btnAddExpense.text = "Voeg uitgawes by"
+            binding.btnAddCategory.text = "Skep kategorie"
+        }
+
         return binding.root
     }
+
+
 
     companion object {
         /**

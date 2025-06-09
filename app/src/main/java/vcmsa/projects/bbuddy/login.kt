@@ -1,5 +1,6 @@
 package vcmsa.projects.bbuddy
 
+import UserSession
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -24,6 +25,15 @@ class login : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
+        if (UserSession.lang == "Af"){
+            binding.txtTitle.text = "welkom terug"
+            binding.etLoginPassword.hint = "wagwoord"
+            binding.etLoginUsername.hint = "e-pos"
+            binding.btnLogin.text = "aanmeld"
+            binding.tvGoToRegister.text = "Het jy nie 'n rekening nie? Registreer hier"
+        }
+
         return binding.root
     }
 

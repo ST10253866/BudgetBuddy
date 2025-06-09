@@ -18,7 +18,15 @@ class createCategory : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+        if (UserSession.lang == "Af"){
+            binding.txtTitle.text = "Skep nuwe kategorie"
+            binding.btnCatBack.text = "Terug"
+            binding.etCategoryName.hint = "Kategorie Naam"
+            binding.etCategoryDescription.hint = "Kategoriebeskrywing (Opsioneel)"
+            binding.etMaxGoal.hint = "Maksimum maandelikse bestedingsdoelwit"
+            binding.etMinGoal.hint = "Minimum maandelikse bestedingsdoelwit"
+            binding.btnSaveCategory.hint = "Wysig kategorie"
+        }
 
        val dao = bbuddyFirestoreDAO()
 

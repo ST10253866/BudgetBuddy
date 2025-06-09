@@ -1,5 +1,6 @@
 package vcmsa.projects.bbuddy
 
+import UserSession
 import android.R
 import android.graphics.Color
 import android.os.Bundle
@@ -44,6 +45,16 @@ class categorySummary : Fragment() {
 
         val dao = bbuddyFirestoreDAO()
         val userId = UserSession.fbUid ?: ""
+
+        if (UserSession.lang == "Af"){
+            binding.txtTitle.text = "Wysig kategorie"
+            binding.btnSumBack.text = "Terug"
+            binding.etCategoryName.hint = "Kategorie Naam"
+            binding.etCategoryDescription.hint = "Kategoriebeskrywing (Opsioneel)"
+            binding.etMaxGoal.hint = "Maksimum maandelikse bestedingsdoelwit"
+            binding.etMinGoal.hint = "Minimum maandelikse bestedingsdoelwit"
+            binding.btnSaveCategory.hint = "Wysig kategorie"
+        }
 
         // Fetch categories and populate spinner
         dao.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->

@@ -1,5 +1,6 @@
 package vcmsa.projects.bbuddy
 
+import UserSession
 import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
@@ -15,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.auth.User
 import vcmsa.projects.bbuddy.databinding.FragmentExpensesListBinding
 import java.util.Calendar
 
@@ -38,6 +40,13 @@ class expensesList : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentExpensesListBinding.inflate(inflater, container, false)
+
+        if (UserSession.lang == "Af"){
+            binding.txtTitle.text = "Jou Uitgawes"
+            binding.btnListBack.text = "Terug"
+            binding.btnFilter.text = "Filterlys"
+            binding.startDateEditText.hint = "Kies Datum"
+        }
 
         setupDatePickers()
         binding.startDateEditText.isFocusable = false

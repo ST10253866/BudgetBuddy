@@ -1,5 +1,6 @@
 package vcmsa.projects.bbuddy
 
+import UserSession
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,6 +21,22 @@ class profile : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
+        if (UserSession.lang == "En") {
+            binding.rbtEn.isChecked = true
+            binding.rbtAf.isChecked = false
+        } else {
+            binding.rbtEn.isChecked = false
+            binding.rbtAf.isChecked = true
+        }
+
+        if (UserSession.lang == "Af"){
+            binding.txtTitle.text = "profiel"
+            binding.etRegisterIncome.hint = "Inkomste"
+            binding.etRegisterFirstname.hint = "Voornaam"
+            binding.etRegisterLastname.hint = "vannaam"
+            binding.btnRegister.text = "Opdateer Profiel"
+        }
+
         val fbUid = UserSession.fbUid
         if (fbUid != null) {
             dao.getUserByFbUid(fbUid).observe(viewLifecycleOwner) { user ->
@@ -35,7 +52,29 @@ class profile : Fragment() {
 
         binding.btnRegister.setText("Update Profile")
 
+        binding.rbtEn.setOnClickListener {
+            binding.rbtAf.isChecked = false
+        }
+
+        binding.rbtAf.setOnClickListener {
+            binding.rbtEn.isChecked = false
+        }
+
         binding.btnRegister.setOnClickListener {
+            if (binding.rbtEn.isChecked){
+                UserSession.lang = "En"
+            } else {
+                UserSession.lang = "Af"
+            }
+
+            if (UserSession.lang == "Af"){
+                binding.txtTitle.text = "profiel"
+                binding.etRegisterIncome.hint = "Inkomste"
+                binding.etRegisterFirstname.hint = "Voornaam"
+                binding.etRegisterLastname.hint = "vannaam"
+                binding.btnRegister.text = "Opdateer Profiel"
+            }
+
             if (binding.etRegisterIncome.text.isNotEmpty() &&
                 binding.etRegisterLastname.text.isNotEmpty() &&
                 binding.etRegisterFirstname.text.isNotEmpty()

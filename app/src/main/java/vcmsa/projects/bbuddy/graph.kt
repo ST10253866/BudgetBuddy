@@ -61,6 +61,14 @@ class graph : Fragment() {
         binding.edtStart.isFocusable = false // disable manual date typing
         binding.edtEnd.isFocusable = false
 
+        if (UserSession.lang == "Af"){
+            binding.txtTitle.text = "Bestedingsgrafiek"
+            binding.edtEnd.hint = "Einddatum"
+            binding.edtStart.hint = "Begindatum"
+            binding.btnApply.text = "Dien toe"
+            binding.btnGraphBack.text = "Terug"
+        }
+
         // Add apply filter button
         binding.btnApply.setOnClickListener {
             if (binding.edtStart.text.isNullOrEmpty() || binding.edtEnd.text.isNullOrEmpty()) {
@@ -136,17 +144,17 @@ class graph : Fragment() {
     private fun setupChart() {
         // Create datasets
         val spendingDataSet = BarDataSet(spendingValues, "Actual Spending").apply {
-            color = Color.rgb(255, 87, 34) // Orange
+            color = Color.rgb(0, 0, 255)
             setDrawValues(true)
         }
 
         val minGoalDataSet = BarDataSet(minGoalValues, "Min Goal").apply {
-            color = Color.rgb(76, 175, 80) // Green
+            color = Color.rgb(0, 255, 0) // Green
             setDrawValues(true)
         }
 
         val maxGoalDataSet = BarDataSet(maxGoalValues, "Max Goal").apply {
-            color = Color.rgb(244, 67, 54) // Red
+            color = Color.rgb(255, 0, 0)
             setDrawValues(true)
         }
 

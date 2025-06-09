@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
@@ -11,6 +12,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Profile"
@@ -47,6 +49,25 @@
             android:backgroundTint="@color/primaryPink"
             android:padding="12dp" />
 
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="44dp" >
+
+            <RadioButton
+                android:id="@+id/rbtAf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Afrikaans" />
+
+        </RadioGroup>
+
+        <RadioButton
+            android:id="@+id/rbtEn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="English" />
+
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
@@ -56,5 +77,11 @@
             android:backgroundTint="@color/primaryPink"
             android:layout_marginTop="24dp" />
 
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
+
+
 </ScrollView>

@@ -1,5 +1,6 @@
 package vcmsa.projects.bbuddy
 
+import UserSession
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -37,6 +38,17 @@ private const val ARG_PARAM2 = "param2"
         }
 
         val dao = bbuddyFirestoreDAO()
+
+        if (UserSession.lang == "Af"){
+            binding.txtTitle.text = "Skep rekening"
+            binding.etRegisterIncome.hint = "Inkomste"
+            binding.etRegisterFirstname.hint = "Voornaam"
+            binding.etRegisterLastname.hint = "vannaam"
+            binding.etRegisterEmail.hint = "e-pos"
+            binding.etRegisterPassword.hint = "wagwoord"
+            binding.btnRegister.text = "Registreer"
+            binding.tvGoToLogin.text = "Het jy reeds 'n rekening? Meld aan"
+        }
 
         binding.btnRegister.setOnClickListener {
             // Check if all fields are filled
