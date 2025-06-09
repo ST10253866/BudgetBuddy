@@ -82,7 +82,7 @@ Role
 User – This user can use this app to budget themselves
 
 Login details for a user in system below:
-Email - test123@email.com
+Email - 1234@mail.com
 
 Password - 123456
 
@@ -132,6 +132,9 @@ GitHub Link
 ======================
 https://github.com/ST10253866/BudgetBuddy
 
+DEMO Video Link
+======================
+https://youtube.com/shorts/aeNRBhKYlvk?feature=share
 
 Credits
 ======================
