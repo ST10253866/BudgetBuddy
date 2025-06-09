@@ -18,11 +18,18 @@ Installation steps(Desktop)
 
 Installation steps(on phone)
 =============================
--Ensure that you download the apk file from the repository on to your phone and then install it 
+-Ensure that you download the APK file from the repository on to your phone and then install it 
 
 -Once installed navigate to the app and open it and the app will open op to the login screen 
 
 -If you do not have an account click the small green text to register in order to use the app
+
+
+The two extra features 
+=========================
+-The users can toggle a light and dark mode for the app.
+
+-There is a language translation feature converting English to Afrikaans that the users can use. 
 
 
 Change log
@@ -67,6 +74,9 @@ How to use
 -From the home page if the user clicks on the button “View Graph” a page will appear showing the user a bar graph showing the total spending per category in a selectable 
  time period. 
 
+-The app has two extra features, the user will be able to toggle between light and dark mode when using the app and the user will be able to translate English to Afrikaans when using app.    
+
+
 Role
 ======
 User – This user can use this app to budget themselves
@@ -92,9 +102,13 @@ Functional-Requirements
 
 -The user will have a view that will display a list of the expense entries they created during a selectable period. Photos of the expense entries will be available to the user on this list, and they will be able to access it.
 
--The user will be able to view the total amount of their money spent on each their category during a user selectable period
+-The user will be able to view the total amount of their money spent on each their category during a user selectable period.
 
--The user will be able to view a bar graph showing the total spending per category in a selectable time period
+-The user will be able to view a bar graph showing the total spending per category in a selectable time period.
+
+-The user can toggle between a light and dark mode when using the app.
+
+-The user can translate English to Afrikaans when using the app as there will be a feature for that.
 
 
 Non-Functional-Requirements
@@ -107,7 +121,7 @@ Non-Functional-Requirements
 
 -Comments are used to describe certain variables that play an important role in the program.
 
--All data for this application will be stored in a firestore Database.
+-All data for this application will be stored in a fire store Database.
 
 -The application will have validation of data inputs.
 
@@ -127,7 +141,7 @@ Karan Moodley – ST10256361
 
 Contact: (Email) ST10256361@vcconnect.edu.za
 
-backend developer
+Backend developer
 
 Devesh Gokul – ST10375204
 
@@ -172,3 +186,4 @@ Foxandroid (2023) Bottom Navigation Bar - Android Studio | Fragments | Kotlin | 
 GeeksforGeeks (2025) Bottom Navigation Bar in Android. https://www.geeksforgeeks.org/bottom-navigation-bar-in-android/. (Accessed on 23 April 2025)
 
 Programming With Nick (2022) Android Viewbinding in 4 minutes - Simple Kotlin Tutorial. https://www.youtube.com/watch?v=QVIgunA3jcQ. (Accessed on 24 April 2025)
+

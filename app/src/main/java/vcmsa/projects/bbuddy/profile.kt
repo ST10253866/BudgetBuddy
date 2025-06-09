@@ -113,7 +113,7 @@ class profile : Fragment() {
                 Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
         }
-        // 🌙 Dark Mode toggle logic
+        // Dark Mode toggle logic
         val sharedPrefs = requireContext().getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
         val isDarkMode = sharedPrefs.getBoolean("DarkMode", false)
         binding.switchDarkMode.isChecked = isDarkMode
