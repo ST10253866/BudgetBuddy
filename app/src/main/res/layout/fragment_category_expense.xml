@@ -22,18 +22,19 @@
             android:textColor="@color/primaryPink"
             android:layout_marginTop="16dp"/>
 
-        <!-- Fixed header with Back button -->
+        <Button
+            android:id="@+id/btnBackToHome"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:text="Back"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:text="Back"/>
+
         </LinearLayout>
 
         <!-- Dynamic content container -->

@@ -24,15 +24,12 @@ import vcmsa.projects.bbuddy.FirestoreExpense
 import vcmsa.projects.bbuddy.R
 import vcmsa.projects.bbuddy.bbuddyFirestoreDAO
 import vcmsa.projects.bbuddy.databinding.FragmentCategoryExpenseBinding
-import vcmsa.projects.bbuddy.databinding.FragmentHomeBinding
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class CategoryExpenseFragment : Fragment() {
-    private val binding: FragmentCategoryExpenseBinding by lazy {
-        FragmentCategoryExpenseBinding.inflate(layoutInflater)
-    }
+
     private val dao = bbuddyFirestoreDAO()
     private var param1: String? = null
     private var param2: String? = null
@@ -49,23 +46,20 @@ class CategoryExpenseFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        binding.btnBack.setOnClickListener {
-            Log.d("button thing", "IT CLIKED")
-            findNavController().navigate(R.id.action_categoryExpenseFragment_to_home)
-        }
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val containerLayout = view.findViewById<LinearLayout>(R.id.category_container)
-        val userId = UserSession.fbUid
 
-        binding.btnBack.setOnClickListener {
-            Log.d("button thing", "IT CLIKED")
+        val btnBack = view.findViewById<Button>(R.id.btnBackToHome)
+        btnBack.setOnClickListener {
+           Log.d("button thing", "IT CLIKED")
             findNavController().navigate(R.id.action_categoryExpenseFragment_to_home)
         }
+
+        val containerLayout = view.findViewById<LinearLayout>(R.id.category_container)
+        val userId = UserSession.fbUid
 
         dao.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->
             containerLayout.removeAllViews()
