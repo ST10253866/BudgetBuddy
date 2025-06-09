@@ -67,6 +67,18 @@
             android:scaleType="fitXY"
             android:layout_marginTop="16dp" />
 
+        <!-- Total Expenses TextView -->
+        <TextView
+            android:id="@+id/txtTotalExpenses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total For Category: R0.00"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/primaryPink"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
         <Button
             android:id="@+id/btnFilter"
             android:layout_width="match_parent"

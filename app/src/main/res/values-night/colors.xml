@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryPink">#D96B94</color>
+    <color name="secondaryGreen">#89C9A3</color>
+    <color name="backgroundBlush">#1E1E1E</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="darkText">#EEEEEE</color>
+    <color name="lightGray">#444444</color>
+    <color name="mediumGray">#AAAAAA</color>
+</resources>

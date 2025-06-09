@@ -1,6 +1,8 @@
 package vcmsa.projects.bbuddy
 
 import UserSession
+import androidx.appcompat.app.AppCompatDelegate
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -111,6 +113,21 @@ class profile : Fragment() {
                 Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
         }
+        // 🌙 Dark Mode toggle logic
+        val sharedPrefs = requireContext().getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
+        val isDarkMode = sharedPrefs.getBoolean("DarkMode", false)
+        binding.switchDarkMode.isChecked = isDarkMode
+
+        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            sharedPrefs.edit().putBoolean("DarkMode", isChecked).apply()
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            requireActivity().recreate()
+        }
+
 
         return binding.root
     }

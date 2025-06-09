@@ -4,19 +4,16 @@ import UserSession
 import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.firestore.auth.User
 import vcmsa.projects.bbuddy.databinding.FragmentExpensesListBinding
 import java.util.Calendar
 
@@ -28,7 +25,7 @@ class expensesList : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: ExpenseAdapter
-    private lateinit var dao: bbuddyDAO
+    private lateinit var dao: bbuddyFirestoreDAO
     private val userId: String by lazy { UserSession.fbUid ?: "" }
 
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -41,22 +38,24 @@ class expensesList : Fragment() {
     ): View {
         _binding = FragmentExpensesListBinding.inflate(inflater, container, false)
 
-        if (UserSession.lang == "Af"){
+        if (UserSession.lang == "Af") {
             binding.txtTitle.text = "Jou Uitgawes"
             binding.btnListBack.text = "Terug"
             binding.btnFilter.text = "Filterlys"
             binding.startDateEditText.hint = "Kies Datum"
+            binding.txtTotalExpenses.text = "Totaal: R0.00"
         } else {
             binding.txtTitle.text = "Your Expenses"
             binding.btnListBack.text = "Back"
             binding.btnFilter.text = "Filter List"
             binding.startDateEditText.hint = "Select date"
+            binding.txtTotalExpenses.text = "Total: R0.00"
         }
 
         setupDatePickers()
         binding.startDateEditText.isFocusable = false
 
-        val dao = bbuddyFirestoreDAO()
+        dao = bbuddyFirestoreDAO()
 
         // Set up RecyclerView
         adapter = ExpenseAdapter(emptyList())
@@ -66,6 +65,7 @@ class expensesList : Fragment() {
         // Load all expenses initially
         dao.getExpensesByUser(userId).observe(viewLifecycleOwner) { allExpenses ->
             adapter.updateData(allExpenses)
+            updateTotal(allExpenses)
         }
 
         // Populate category spinner
@@ -104,7 +104,6 @@ class expensesList : Fragment() {
         binding.btnFilter.setOnClickListener {
             val selectedMonthYear = binding.startDateEditText.text.toString().trim()
 
-            // Logic: filter by category, then by month if present
             if (selectedCategoryId != null) {
                 dao.getExpensesByCategory(selectedCategoryId!!).observe(viewLifecycleOwner) { categoryExpenses ->
                     val filtered = if (selectedMonthYear.isNotEmpty()) {
@@ -113,14 +112,17 @@ class expensesList : Fragment() {
                         categoryExpenses
                     }
                     adapter.updateData(filtered)
+                    updateTotal(filtered)
                 }
             } else if (selectedMonthYear.isNotEmpty()) {
                 dao.getExpensesByMonthYear(selectedMonthYear).observe(viewLifecycleOwner) { monthExpenses ->
                     adapter.updateData(monthExpenses)
+                    updateTotal(monthExpenses)
                 }
             } else {
                 dao.getAllExpenses().observe(viewLifecycleOwner) { allExpenses ->
                     adapter.updateData(allExpenses)
+                    updateTotal(allExpenses)
                 }
             }
         }
@@ -133,8 +135,8 @@ class expensesList : Fragment() {
         val showDatePicker: (EditText) -> Unit = { editText ->
             DatePickerDialog(
                 this.requireContext(),
-                { _, year, month, dayOfMonth ->
-                    editText.setText(String.format("%02d/%02d", month + 1, year))
+                { _, year, month, _ ->
+                    editText.setText(String.format("%02d/%04d", month + 1, year))
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -143,6 +145,15 @@ class expensesList : Fragment() {
         }
 
         binding.startDateEditText.setOnClickListener { showDatePicker(binding.startDateEditText) }
+    }
+
+    private fun updateTotal(expenses: List<FirestoreExpense>) {
+        val total = expenses.sumOf { it.amount }
+        if (UserSession.lang == "Af") {
+            binding.txtTotalExpenses.text = "Totaal: R%.2f".format(total)
+        } else {
+            binding.txtTotalExpenses.text = "Total: R%.2f".format(total)
+        }
     }
 
     override fun onDestroyView() {
