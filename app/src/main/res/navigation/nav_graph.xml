@@ -118,5 +118,9 @@
     <fragment
         android:id="@+id/categoryExpenseFragment"
         android:name="vcmsa.projects.bbuddy.ui.CategoryExpenseFragment"
-        android:label="CategoryExpenseFragment" />
+        android:label="CategoryExpenseFragment" >
+        <action
+            android:id="@+id/action_categoryExpenseFragment_to_home"
+            app:destination="@id/home" />
+    </fragment>
 </navigation>

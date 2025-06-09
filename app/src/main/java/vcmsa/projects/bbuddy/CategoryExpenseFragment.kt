@@ -4,25 +4,38 @@ import android.graphics.drawable.ClipDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import vcmsa.projects.bbuddy.FirestoreCategory
 import vcmsa.projects.bbuddy.FirestoreExpense
 import vcmsa.projects.bbuddy.R
 import vcmsa.projects.bbuddy.bbuddyFirestoreDAO
+import vcmsa.projects.bbuddy.databinding.FragmentCategoryExpenseBinding
+import vcmsa.projects.bbuddy.databinding.FragmentHomeBinding
+
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
 class CategoryExpenseFragment : Fragment() {
+    private val binding: FragmentCategoryExpenseBinding by lazy {
+        FragmentCategoryExpenseBinding.inflate(layoutInflater)
+    }
     private val dao = bbuddyFirestoreDAO()
+    private var param1: String? = null
+    private var param2: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,10 +43,29 @@ class CategoryExpenseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_category_expense, container, false)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
+        binding.btnBack.setOnClickListener {
+            Log.d("button thing", "IT CLIKED")
+            findNavController().navigate(R.id.action_categoryExpenseFragment_to_home)
+        }
+    }
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val containerLayout = view.findViewById<LinearLayout>(R.id.category_container)
         val userId = UserSession.fbUid
+
+        binding.btnBack.setOnClickListener {
+            Log.d("button thing", "IT CLIKED")
+            findNavController().navigate(R.id.action_categoryExpenseFragment_to_home)
+        }
 
         dao.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->
             containerLayout.removeAllViews()
